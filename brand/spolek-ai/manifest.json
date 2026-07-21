@@ -1,0 +1,58 @@
+{
+  "id": "spolek-ai",
+  "name": "Spolek AI",
+  "projects": [
+    "Spolek AI",
+    "spolek.ai"
+  ],
+  "brandIsolation": {
+    "enabled": true,
+    "assetOwner": "Spolek AI",
+    "sourceFolder": null,
+    "forbiddenAssetOwners": [
+      "Agenda24",
+      "Pupeto"
+    ],
+    "rule": "Používat pouze vlastní zdroje Spolku AI. Dokud nejsou dodané, nepoužívat žádné logo ani osobní fotografii."
+  },
+  "colors": {
+    "background": [
+      "#F4F6F8",
+      "#FFFFFF"
+    ],
+    "primary": "#245B78",
+    "secondary": "#5D7180",
+    "accent": "#6AA6B8",
+    "text": "#17222B"
+  },
+  "style": "Neutrální moderní B2B, komunitní a firemní styl zaměřený na AI vzdělávání a praktické zavádění AI.",
+  "promptRules": [
+    "Před každým obrazovým a video promptem načíst visual-manual/README.md a použít pouze konkrétní schválené reference z visual-manual/references/.",
+    "Používat neutrální firemní prostředí, týmy, workshopy, vzdělávání, procesní mapy a dashboardy.",
+    "Bez konkrétního loga a bez falešného loga, dokud nejsou dodané vlastní brandové zdroje.",
+    "Bez loga 24, plného loga Agenda24, Martinových fotografií a vizuálů Agenda24.",
+    "Bez Apple Watch Ultra, černého saka jako povinného prvku a bez tmavého magenta stylu Agenda24.",
+    "Používat střízlivou modrošedou barevnost, dostatek světlého prostoru a profesionální informační kompozici."
+  ],
+  "forbiddenVisuals": [
+    "logo 24",
+    "logo Agenda24",
+    "Martinovy fotografie",
+    "Apple Watch Ultra",
+    "černé sako jako povinný osobní prvek",
+    "tmavý magenta styl Agenda24",
+    "falešné logo Spolku AI",
+    "humanoidní roboti a sci-fi klišé"
+  ],
+  "logoReferences": [],
+  "martinReferences": [],
+  "designReferences": [],
+  "consistency": "Moderní neutrální B2B vizuály s firemními týmy, komunitou a AI vzděláváním. Bez jakýchkoli prvků nebo zdrojů Agenda24.",
+  "visualManual": {
+    "root": "visual-manual/README.md",
+    "imagePromptTemplate": "visual-manual/prompts/image-template.md",
+    "videoPromptTemplate": "visual-manual/prompts/video-template.md",
+    "referencesRoot": "visual-manual/references/",
+    "mandatoryRule": "Před vytvořením každého obrazového nebo video promptu načíst tento vizuální manuál a uvést konkrétní použité referenční soubory."
+  }
+}
