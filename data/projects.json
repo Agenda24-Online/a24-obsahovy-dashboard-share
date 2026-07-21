@@ -1,0 +1,27 @@
+[
+  {
+    "name": "Agenda24",
+    "folder": "02-agenda24",
+    "brand": "agenda24",
+    "url": "https://agenda24.cz/",
+    "profile": "../brand/profiles/agenda24.json"
+  },
+  {
+    "name": "Pupeto",
+    "folder": "03-pupeto",
+    "brand": "pupeto",
+    "url": "https://pupeto.eu/"
+  },
+  {
+    "name": "Spolek AI",
+    "folder": "04-spolek-ai",
+    "brand": "spolek-ai",
+    "url": "https://spolek.ai/"
+  },
+  {
+    "name": "Firemní lektor",
+    "folder": "05-firemni-lektor",
+    "brand": "firemni-lektor",
+    "url": "https://www.firemnilektor.cz/"
+  }
+]
