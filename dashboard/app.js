@@ -48,7 +48,9 @@ const sectionDefinitions = [
   ["imageReferences", "Reference k obrázku", ["Reference k obrázku"]],
   ["videoReferences", "Reference k videu", ["Reference k videu"]],
   ["imagePrompt", "Prompt na obrázek", ["Prompt na obrázek"]],
-  ["videoPrompt", "Prompt na video", ["Prompt na video", "Scénář 10 s videa", "Mluvený text pro video"]]
+  ["videoPrompt", "Prompt na video", ["Prompt na video", "Scénář 10 s videa", "Mluvený text pro video"]],
+  ["flowShort", "Gemini Flow / Omni – marketingový short (10 s)", ["Gemini Flow / Omni – marketingový short (10 s)"]],
+  ["flowSeries", "Gemini Flow / Omni – rozvinutý scénář (volitelně)", ["Gemini Flow / Omni – rozvinutý scénář (volitelně)"]]
 ];
 
 const featureDefinitions = [
@@ -66,7 +68,8 @@ const detailGroups = [
   ["Pracovní návrhy pro sociální sítě", ["facebook", "linkedin", "instagram"]],
   ["Finální texty pro publikaci", ["facebookPublish", "linkedinPublish", "instagramPublish", "youtubePublish", "graphicText"]],
   ["TikTok balíček", ["tiktokFormat", "tiktokHook", "tiktokScript", "tiktokSpoken", "tiktokOnscreen", "tiktokStoryboard", "tiktokPublish", "tiktokCta", "tiktokHashtags", "tiktokVideoPrompt", "tiktokCoverPrompt", "tiktokGoal", "tiktokStrategy"]],
-  ["Grafika a video", ["alt", "imageReferences", "videoReferences", "imagePrompt", "videoPrompt"]]
+  ["Grafika a video", ["alt", "imageReferences", "videoReferences", "imagePrompt", "videoPrompt"]],
+  ["Videa pro Gemini Flow / Omni", ["flowShort", "flowSeries"]]
 ];
 
 const stepLabels = {
@@ -479,6 +482,22 @@ function inlineMarkdown(value) {
     .replace(/`(.+?)`/g, "<code>$1</code>");
 }
 
+function showCopyPreview(value, title) {
+  document.querySelector("#copyPreview")?.remove();
+  const dialog = document.createElement("section");
+  dialog.id = "copyPreview";
+  dialog.setAttribute("role", "dialog");
+  dialog.setAttribute("aria-modal", "true");
+  dialog.setAttribute("aria-label", title);
+  dialog.style.cssText = "position:fixed;z-index:10000;inset:5vh 5vw;background:#101426;color:#fff;border:1px solid #e43a73;border-radius:16px;padding:20px;box-shadow:0 24px 80px rgba(0,0,0,.6);display:flex;flex-direction:column;gap:12px;";
+  dialog.innerHTML = `<div style="display:flex;justify-content:space-between;gap:16px;align-items:center"><strong>${escapeHtml(title)}</strong><button type="button" data-close-copy-preview style="padding:8px 12px">Zavřít</button></div><p style="margin:0;color:#cbd5e1">Text je zkopírovaný. Tady ho zároveň vidíte celý — vložte ho do Gemini Flow přes Ctrl+V.</p><textarea readonly style="width:100%;min-height:55vh;resize:vertical;box-sizing:border-box;padding:12px;font:13px/1.45 ui-monospace,monospace;white-space:pre-wrap">${escapeHtml(value)}</textarea>`;
+  document.body.appendChild(dialog);
+  const area = dialog.querySelector("textarea");
+  area.focus();
+  area.select();
+  dialog.querySelector("[data-close-copy-preview]").addEventListener("click", () => dialog.remove());
+}
+
 async function copyText(text, button) {
   const value = String(text || "").trim();
   const original = button.textContent;
@@ -515,6 +534,9 @@ async function copyText(text, button) {
     }
     button.textContent = "Zkopírováno – vložte Ctrl+V";
     button.classList.add("copied");
+    if (["flowShort", "flowSeries"].includes(button.dataset.publishCopy)) {
+      showCopyPreview(value, button.dataset.publishCopy === "flowShort" ? "Gemini Flow / Omni – video 10 s" : "Gemini Flow / Omni – navazující scénář (3 × 10 s)");
+    }
     window.setTimeout(() => { button.textContent = original; button.classList.remove("copied"); }, 2400);
   } catch (error) {
     button.textContent = "Kopírování selhalo";
@@ -718,16 +740,138 @@ Nejdřív stručně popiš navržené soubory a datový tok, potom změnu implem
   if (force || !activeSections.featureCodexPrompt) activeSections.featureCodexPrompt = prompt;
 }
 
-function generateVideo(force = false) {
-  if (!(hasType(activeCard, "video", "Reels")) && !force) return;
+function geminiFlowRules() {
+  return `Cílový model: Gemini Flow / Omni. Vertikální video 9:16, délka přesně 10 sekund. Český dialog musí skončit nejpozději v 7. sekundě; poslední 3 sekundy jsou pro reakci a čistý obraz. Žádné titulky, grafické overlaye, falešná loga ani nedokončené věty.`;
+}
+
+function geminiPrompt({brand, theme, visual, dialogue, action, ending}) {
+  return `# Gemini Flow / Omni – hotový prompt (10 s)
+
+${geminiFlowRules()}
+
+Značka: ${brand.name}
+Téma: „${theme}“
+Vizuální situace: ${visual}
+Postavy a prostředí: ${action}
+
+ČASOVÝ SCÉNÁŘ:
+- 0–3 s: ${dialogue[0]}
+- 3–7 s: ${dialogue[1]}
+- 7–10 s: ${ending}
+
+Zvuk: pouze přirozený český dialog a jemný ruch prostředí. Pohyb rtů musí přesně odpovídat české řeči. Konec musí být beze slov, aby se při publikaci mohl přidat odkaz mimo video.`;
+}
+
+function generateFlowVideos() {
   const brand = brandFor(activeCard);
+  const theme = activeCard.title;
+  const visual = activeCard.summary || "Jedna jasně čitelná situace související s tématem.";
+
   if (brand.id === "pupeto") {
-    const opening = `Víte proč je téma „${activeCard.title}“ důležité pro majitele mazlíčků?`;
-    activeSections.videoPrompt = `Vytvoř desetisekundové vertikální video 9:16 pro Pupeto.eu. Jeden konzistentní ženský český hlas, bez střídání hlasů a bez mluvících zvířat. Mluvený text: „${opening} ${activeCard.summary} Praktické informace najdete na Pupeto.eu.“ Scénář: 0–2 s otázka a přirozený detail postavy podle reference ${brand.characters["Jeepers Jack"].references[0]}; 2–5 s praktická situace související s tématem; 5–8 s tři vizuální kroky nebo možnosti bez textových overlayů; 8–10 s klidný závěr s prázdnou plochou pro následné logo a CTA. Přirozená fyzika, realistický pohyb, žádné deformované končetiny ani prolínání objektů. Negenerovat logo, titulky, grafické overlaye ani cizí značky. ${brand.negativePrompt}`;
+    const characters = "Skutečně roztomilý pes Jeepers Jack a kočka Mňouk podle referencí Pupeto; oba mluví česky, s přesnou synchronizací tlamy.";
+    activeSections.flowShort = geminiPrompt({
+      brand, theme, visual,
+      dialogue: [
+        "Jack se podívá do kamery: „Víte co? Tohle se týká i nás.“",
+        "Mňouk odpoví: „Tak to radši vyřešme včas.“"
+      ],
+      action: `${characters} Vizuálně ukaž: ${visual}`,
+      ending: "Oba si vymění pobavený pohled; Jack přikývne. Čistý obraz bez textu."
+    });
+
+    activeSections.flowSeries = `# Gemini Flow / Omni – rozvinutý scénář (3 × 10 s)
+
+Níže jsou tři hotové samostatné prompty. Každý vlož do Gemini Flow / Omni zvlášť. Nejde o instrukci k vytvoření scénáře; toto je přímo scénář a prompty k videím.
+
+## ČÁST 1 – hook
+${geminiPrompt({
+  brand, theme, visual,
+  dialogue: [
+    "Jack do kamery: „Víte co? Tohle se týká i nás.“",
+    "Mňouk: „A stojí za to to nepodcenit.“"
+  ],
+  action: `${characters} Vizuálně ukaž první náznak tématu: ${visual}`,
+  ending: "Mňouk zvedne obočí, Jack se nakloní blíž ke kameře. Bez textu."
+})}
+
+## ČÁST 2 – jednoduchý krok
+${geminiPrompt({
+  brand, theme, visual,
+  dialogue: [
+    "Jack ukáže na jednoduchý praktický krok: „Začněme jednou maličkostí.“",
+    "Mňouk souhlasí: „Ta často udělá nejvíc.“"
+  ],
+  action: `${characters} Stejné prostředí a vzhled postav. Ukaž jeden srozumitelný krok k tématu.`,
+  ending: "Oba spokojeně přikývnou. Bez textu."
+})}
+
+## ČÁST 3 – pointa
+${geminiPrompt({
+  brand, theme, visual,
+  dialogue: [
+    "Mňouk do kamery: „Dobrá rada šetří starosti.“",
+    "Jack krátce dodá: „A najdete ji na Pupeto.eu.“"
+  ],
+  action: `${characters} Stejné prostředí, přátelská komediální nálada.`,
+  ending: "Jack a Mňouk se podívají do kamery; vpravo zůstane čisté místo pro odkaz při publikaci."
+})}`;
     return;
   }
-  const spoken = activeSections.videoPrompt?.match(/Mluvený text:\s*([\s\S]*?)(?:\n\n|$)/)?.[1] || `${activeCard.title}. ${activeCard.summary} Nejdřív konkrétní cíl, potom řešení. Méně šumu, více skutečných výsledků.`;
-  activeSections.videoPrompt = `Prompt na video: Krátké dynamické video značky ${brand.name}. ${brand.style} Téma: ${activeCard.title}. ${brand.consistency} Barvy: ${brand.colors.primary}, ${brand.colors.background.join(", ")}. ${brand.promptRules.join(" ")} Doporučený formát 1080 × 1920 px, 9:16, délka 10 sekund.\n\nMluvený text: ${spoken}\n\nScénář po časech:\n- 0–2 s: výrazný hook „${activeCard.title}“\n- 2–5 s: vizuální pojmenování problému – ${activeCard.summary}\n- 5–8 s: praktické řešení – ${baseRecommendation()}\n- 8–10 s: závěrečné CTA a logo ${brand.name}.\n\nReference: ${[...brand.logoReferences, ...brand.martinReferences, ...brand.designReferences].join(", ") || "doplnit do brandové složky"}.`;
+
+  const person = "Jedna přirozeně působící česká osoba v prostředí odpovídajícím tématu.";
+  activeSections.flowShort = geminiPrompt({
+    brand, theme, visual,
+    dialogue: [
+      "Osoba do kamery: „Víte, kde vzniká zbytečná práce?“",
+      "Ukáže na problém: „Tady. Zjednodušte jeden krok.“"
+    ],
+    action: `${person} Styl značky: ${brand.style} Vizuálně ukaž: ${visual}`,
+    ending: "Osoba přikývne; čistý závěr s volným místem pro odkaz při publikaci."
+  });
+
+  activeSections.flowSeries = `# Gemini Flow / Omni – rozvinutý scénář (3 × 10 s)
+
+Níže jsou tři hotové samostatné prompty pro Gemini Flow / Omni.
+
+## ČÁST 1 – problém
+${geminiPrompt({
+  brand, theme, visual,
+  dialogue: [
+    "Český hlas: „Víte, kde vzniká zbytečná práce?“",
+    "Český hlas: „Často v jednom malém kroku.“"
+  ],
+  action: `${person} Značka: ${brand.name}. Ukaž: ${visual}`,
+  ending: "Krátká reakce osoby, čistý obraz bez textu."
+})}
+
+## ČÁST 2 – řešení
+${geminiPrompt({
+  brand, theme, visual,
+  dialogue: [
+    "Český hlas: „Vyberte jeden krok.“",
+    "Český hlas: „A udělejte ho jednodušší.“"
+  ],
+  action: `${person} Stejný vizuální svět. Ukaž jeden konkrétní praktický krok k tématu.`,
+  ending: "Osoba dokončí jednoduchý úkon a přikývne."
+})}
+
+## ČÁST 3 – výsledek
+${geminiPrompt({
+  brand, theme, visual,
+  dialogue: [
+    "Český hlas: „Méně šumu.“",
+    "Český hlas: „Více výsledků.“"
+  ],
+  action: `${person} Stejný vizuální svět a styl značky.`,
+  ending: "Čistý závěr s volným místem pro odkaz při publikaci."
+})}`;
+}
+
+function generateVideo(force = false) {
+  generateFlowVideos();
+  if (!(hasType(activeCard, "video", "Reels")) && !force) return;
+  const brand = brandFor(activeCard);
+  activeSections.videoPrompt = activeSections.flowShort;
 }
 
 function ensureProductionContent() {
@@ -1029,7 +1173,7 @@ function generateTikTokPackage() {
 
 function renderDetailSections() {
   const labels = Object.fromEntries(sectionDefinitions.map(([key, label]) => [key, label]));
-  const renderRows = keys => keys.map(key => `<div class="feature-row"><div class="detail-section-head"><h4>${labels[key] || featureDefinitions.find(([featureKey]) => featureKey === key)?.[1] || key}</h4></div><div class="markdown-content">${markdownToHtml(activeSections[key])}</div></div>`).join("");
+  const renderRows = keys => keys.map(key => `<div class="feature-row" id="section-${key}"><div class="detail-section-head"><h4>${labels[key] || featureDefinitions.find(([featureKey]) => featureKey === key)?.[1] || key}</h4></div><div class="markdown-content">${markdownToHtml(activeSections[key])}</div></div>`).join("");
   const standardGroups = detailGroups.map(([title, keys]) => `<section class="detail-section"><div class="detail-section-head"><h3>${title}</h3></div>${renderRows(keys)}</section>`).join("");
   const featureMain = `<section class="detail-section feature-section"><div class="detail-section-head"><h3>Návrh funkce / aplikace / pluginu</h3></div>${renderRows(["featureType", "featureName", "featureSummary", "featureBenefit"])}</section>`;
   const featureMvp = `<section class="detail-section feature-section"><div class="detail-section-head"><h3>MVP verze</h3></div><div class="markdown-content">${markdownToHtml(activeSections.featureMvp)}</div></section>`;
@@ -1067,7 +1211,7 @@ function exportContent(kind) {
     blog: `# ${activeSections.h1 || activeSections.blogTitle}\n\n## SEO titulek\n${activeSections.seoTitle}\n\n## Perex\n${activeSections.perex}\n\n## Osnova\n${activeSections.blogOutline}\n\n## Blogový draft\n${activeSections.blogDraft}\n\n## Závěr\n${activeSections.conclusion}\n\n## CTA\n${activeSections.cta}\n\n## Meta title\n${activeSections.metaTitle}\n\n## Meta description pro Yoast SEO (140–155 znaků včetně mezer)\n${activeSections.metaDescription}\n\n## Hlavní klíčová fráze pro Yoast SEO\n${activeSections.focusKeyphrase || ""}\n\n## Související klíčová slova\n${activeSections.seoKeywords || ""}\n\n## URL slug\n${activeSections.urlSlug}`,
     social: `# Sociální texty – ${activeCard.title}\n\n## Facebook\n${activeSections.facebook || ""}\n\n## LinkedIn\n${activeSections.linkedin || ""}\n\n## Instagram caption\n${activeSections.instagram || ""}\n\n## Text do grafiky\n${activeSections.graphicText || ""}\n\n## Newsletter\n${activeSections.newsletter || ""}\n\n## CTA\n${activeSections.cta || ""}`,
     image: `# Prompt na obrázek\n\n## Alt text\n${activeSections.alt || ""}\n\n## Prompt\n${activeSections.imagePrompt || ""}`,
-    video: `# Prompt na video\n\n${activeSections.videoPrompt || ""}`
+    video: `# Gemini Flow / Omni – marketingový short (10 s)\n\n${activeSections.flowShort || activeSections.videoPrompt || ""}\n\n# Gemini Flow / Omni – rozvinutý scénář (volitelně)\n\n${activeSections.flowSeries || ""}`
   };
   const names = {blog:"blog.md", social:"social.md", image:"image-prompt.md", video:"video-prompt.md"};
   downloadMarkdown(names[kind], header + bodies[kind]);
@@ -1315,6 +1459,8 @@ document.querySelector("#publishActions").addEventListener("click", event => {
     graphicText: activeSections.graphicText,
     imagePrompt: activeSections.imagePrompt,
     videoPrompt: activeSections.videoPrompt,
+    flowShort: activeSections.flowShort,
+    flowSeries: activeSections.flowSeries,
     featureCodexPrompt: activeSections.featureCodexPrompt
   };
   copyText(values[button.dataset.publishCopy], button);
@@ -1324,7 +1470,10 @@ document.querySelector("#generateActions").addEventListener("click", event => {
   const button = event.target.closest("[data-generate]"); if (!button) return;
   const actions = {blog: () => generateBlog(true), social: () => generateSocial(true), image: () => generateImage(true), video: () => generateVideo(true), feature: () => generateFeature(true)};
   actions[button.dataset.generate](); persistGenerated(); renderDetailSections();
-  button.textContent = "Vygenerováno"; window.setTimeout(() => button.textContent = {blog:"Vygenerovat blog",social:"Vygenerovat sociální texty",image:"Vygenerovat prompt obrázku",video:"Vygenerovat prompt videa",feature:"Vygenerovat návrh funkce / pluginu"}[button.dataset.generate], 1300);
+  if (button.dataset.generate === "video") {
+    document.querySelector("#section-flowShort")?.scrollIntoView({behavior:"smooth", block:"start"});
+  }
+  button.textContent = "Vygenerováno"; window.setTimeout(() => button.textContent = {blog:"Vygenerovat blog",social:"Vygenerovat sociální texty",image:"Vygenerovat prompt obrázku",video:"Vygenerovat videa Gemini Flow / Omni",feature:"Vygenerovat návrh funkce / pluginu"}[button.dataset.generate], 1300);
 });
 
 document.querySelector("[data-brand-package]").addEventListener("click", async event => {
