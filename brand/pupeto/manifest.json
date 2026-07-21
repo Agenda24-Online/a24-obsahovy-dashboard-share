@@ -1,0 +1,222 @@
+{
+  "id": "pupeto",
+  "name": "Pupeto.eu",
+  "projects": [
+    "Pupeto",
+    "Pupeto.eu",
+    "pupeto.eu"
+  ],
+  "brandIsolation": {
+    "enabled": true,
+    "assetOwner": "Pupeto.eu",
+    "sourceFolder": "../../zdroje grafika pupeto/",
+    "brandManual": "C:/Users/picaz/OneDrive/Plocha/1 SuperPes/brand-manual.html",
+    "forbiddenAssetOwners": [
+      "Agenda24",
+      "Spolek AI",
+      "Firemní lektor",
+      "Dobrý grafik",
+      "klientské značky"
+    ],
+    "rule": "Do Pupeto nepřenášet logo 24, Martina, magentu Agenda24, tmavé technologické navy pozadí ani jiné zdroje cizí značky."
+  },
+  "positioning": "Důvěryhodný portál a tržiště služeb pro domácí mazlíčky, praktický pomocník a komunita majitelů, odborníků a poskytovatelů služeb.",
+  "toneOfVoice": {
+    "general": "přátelský, praktický, srozumitelný, pozitivní, důvěryhodný a emočně příjemný",
+    "avoid": [
+      "infantilní šišlání",
+      "marketingový patos",
+      "strašení",
+      "manipulace",
+      "zdůrazňování AI bez výslovného zadání"
+    ]
+  },
+  "colors": {
+    "primary": "#017795",
+    "primaryLight": "#0AA6BD",
+    "pink": "#EF5D86",
+    "pinkAccent": "#F47AA0",
+    "ink": "#1A2738",
+    "inkSecondary": "#25364A",
+    "paper": "#FFFFFF",
+    "soft": "#F6FAFC",
+    "sky": "#EAF9FC",
+    "mint": "#DDF7F2",
+    "line": "#D8E8EF",
+    "supporting": {
+      "orange": "#FF7A59",
+      "violet": "#7C6CF2",
+      "green": "#21BFA8",
+      "yellow": "#FFB545"
+    },
+    "background": [
+      "#FFFFFF",
+      "#F6FAFC",
+      "#EAF9FC"
+    ],
+    "text": "#1A2738"
+  },
+  "fonts": {
+    "heading": {
+      "name": "Cherry Bomb One",
+      "file": "../../zdroje grafika pupeto/CherryBombOne-Regular.ttf",
+      "use": "výrazné nadpisy a hravé display prvky"
+    },
+    "body": {
+      "name": "Nunito Sans",
+      "file": "../../zdroje grafika pupeto/NunitoSans-VariableFont_YTLC,opsz,wdth,wght.ttf",
+      "use": "běžný text, popisky a rozhraní"
+    }
+  },
+  "style": "Čistý, světlý, přátelský a důvěryhodný pet-marketplace styl s tyrkysovou, růžovou, měkkou typografií, přirozenými zvířaty a praktickým kontextem služeb.",
+  "logoPolicy": {
+    "official": [
+      "../../zdroje grafika pupeto/logo pupeto 350 x 150.svg",
+      "../../zdroje grafika pupeto/logo-pupeto-velke.png",
+      "../../zdroje grafika pupeto/logo-pupeto.png"
+    ],
+    "rules": [
+      "Použít pouze oficiální zdrojový soubor.",
+      "Logo vkládat až jako samostatnou vrstvu.",
+      "Nepřekreslovat, neměnit text, poměr stran, barvy ani nepřidávat nepovolené efekty.",
+      "Obrazový generátor nesmí vytvářet logo ani falešný wordmark."
+    ]
+  },
+  "characters": {
+    "Jeepers Jack": {
+      "status": "identita musí vycházet z originálních zdrojů",
+      "references": [
+        "../../zdroje grafika pupeto/jack a mnouk.png",
+        "../../zdroje grafika pupeto/Jack & Mnouk.mp4"
+      ]
+    },
+    "Mjolk": {
+      "status": "NÁZEV K POTVRZENÍ – zdrojové soubory používají podobu Mnouk",
+      "references": [
+        "../../zdroje grafika pupeto/jack a mnouk.png",
+        "../../zdroje grafika pupeto/Jack & Mnouk.mp4"
+      ]
+    }
+  },
+  "characterRules": [
+    "Neměnit identitu, druh zvířete, kresbu srsti, proporce ani charakteristické rysy.",
+    "Nevytvářet náhodné náhradní psy nebo kočky.",
+    "Bez lidských rukou, humanoidních postav, deformované anatomie a náhodných kostýmů.",
+    "Střídat postavy, pózy, situace a ořezy podle tématu."
+  ],
+  "logoReferences": [
+    "../../zdroje grafika pupeto/logo pupeto 350 x 150.svg",
+    "../../zdroje grafika pupeto/logo-pupeto-velke.png",
+    "../../zdroje grafika pupeto/logo-pupeto.png"
+  ],
+  "martinReferences": [],
+  "designReferences": [
+    "../../zdroje grafika pupeto/jack a mnouk.png",
+    "../../zdroje grafika pupeto/Jack & Mnouk.mp4",
+    "../../zdroje grafika pupeto/ikony hero-01.svg",
+    "../../zdroje grafika pupeto/ikony hero-02.svg",
+    "../../zdroje grafika pupeto/ikony hero-03.svg",
+    "../../zdroje grafika pupeto/ikony hero-04.svg",
+    "../../zdroje grafika pupeto/ikony hero-05.svg",
+    "../../zdroje grafika pupeto/ikony hero-06.svg",
+    "../../zdroje grafika pupeto/ikony hero-07.svg",
+    "../../zdroje grafika pupeto/ikony hero-08.svg",
+    "../../zdroje grafika pupeto/ikony hero-09.svg",
+    "../../zdroje grafika pupeto/ikony hero-10.svg",
+    "../../zdroje grafika pupeto/ikony hero-11.svg",
+    "../../zdroje grafika pupeto/ostatni.svg",
+    "../../zdroje grafika pupeto/pieta.svg"
+  ],
+  "formats": {
+    "blogHero": {
+      "size": "1600x900",
+      "name": "Web/blog hero"
+    },
+    "facebook": {
+      "size": "1200x630",
+      "name": "Facebook"
+    },
+    "instagramPortrait": {
+      "size": "1080x1350",
+      "name": "Instagram portrait"
+    },
+    "instagramSquare": {
+      "size": "1080x1080",
+      "name": "Instagram square"
+    },
+    "story": {
+      "size": "1080x1920",
+      "name": "Instagram/Facebook Story"
+    },
+    "youtube": {
+      "size": "1280x720",
+      "name": "YouTube thumbnail"
+    },
+    "linkedin": {
+      "size": "1200x627",
+      "name": "LinkedIn",
+      "condition": "jen pro poskytovatele služeb, partnery, veterináře, firmy nebo obchodní rozvoj"
+    }
+  },
+  "contentRules": {
+    "requiredPackage": [
+      "téma a účel",
+      "cílová skupina",
+      "hlavní sdělení",
+      "doporučený typ obsahu",
+      "kompletní blog, pokud je vhodný",
+      "relevantní sociální texty",
+      "text do grafiky",
+      "CTA",
+      "alt text",
+      "SEO údaje",
+      "koncept vizuálu",
+      "formátové obrazové prompty",
+      "video prompt, pokud je vhodný",
+      "seznam použitých zdrojů",
+      "kontrolní seznam"
+    ],
+    "blogWords": [
+      900,
+      1500
+    ],
+    "facebookWords": [
+      120,
+      250
+    ],
+    "instagramWords": [
+      80,
+      180
+    ],
+    "linkedinRule": "Nevytvářet automaticky pro spotřebitelský obsah; jen pro B2B a partnerská témata.",
+    "healthSafety": "Zdravotní obsah nenahrazuje veterinární diagnózu. Rozlišit běžnou situaci, varovné příznaky, potřebu odborné pomoci a akutní stav. Nevymýšlet zdravotní fakta."
+  },
+  "videoRules": {
+    "format": "9:16",
+    "defaultSeconds": 10,
+    "voice": "jeden konzistentní ženský český hlas",
+    "opening": "Víte proč…? nebo Víte co…?",
+    "rules": [
+      "bez střídání hlasů",
+      "bez mluvících zvířat",
+      "bez loga, titulků a overlayů v generovaném videu",
+      "přirozená fyzika a realistický pohyb",
+      "bez deformací a prolínání objektů"
+    ]
+  },
+  "promptRules": [
+    "Před každým obrazovým a video promptem načíst visual-manual/README.md a použít pouze konkrétní schválené reference z visual-manual/references/.",
+    "Uvést formát, účel, sdělení, postavu, přesnou referenci, prostředí, výraz, pózu, kompozici, světlo, ověřené barvy, prostor pro text a logo a zakázané prvky.",
+    "Každý formát má vlastní kompozici, nikoli mechanický ořez.",
+    "Logo a finální texty přidat následně z originálních souborů."
+  ],
+  "negativePrompt": "no invented logo, no fake Pupeto wordmark, no misspelled text, no watermark, no foreign logos, no random dog, no random cat, no replacement mascot, no altered Jeepers Jack identity, no altered Mjolk identity, no humanoid animals, no human hands on animals, no deformed paws, no extra legs, no duplicate animal, no fused bodies, no distorted anatomy, no plastic fur, no generic stock-photo look, no unrelated technology graphics, no Agenda24 visual identity, no logo 24, no portrait of Martin, no clutter, no unreadable typography",
+  "consistency": "Vždy nejdřív ověřit brand manuál a inventuru. Používat pouze skutečné zdroje Pupeto, vlastní tyrkysovo-růžovou paletu, Cherry Bomb One a Nunito Sans. Bez prvků Agenda24.",
+  "visualManual": {
+    "root": "visual-manual/README.md",
+    "imagePromptTemplate": "visual-manual/prompts/image-template.md",
+    "videoPromptTemplate": "visual-manual/prompts/video-template.md",
+    "referencesRoot": "visual-manual/references/",
+    "mandatoryRule": "Před vytvořením každého obrazového nebo video promptu načíst tento vizuální manuál a uvést konkrétní použité referenční soubory."
+  }
+}
