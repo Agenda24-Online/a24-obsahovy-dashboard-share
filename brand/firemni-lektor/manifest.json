@@ -1,0 +1,44 @@
+{
+  "id": "firemni-lektor",
+  "name": "Firemní lektor",
+  "projects": [
+    "Firemní lektor",
+    "firemnilektor.cz"
+  ],
+  "website": "https://www.firemnilektor.cz/",
+  "brandIsolation": {
+    "enabled": true,
+    "assetOwner": "Firemní lektor",
+    "sourceFolder": null,
+    "forbiddenAssetOwners": [
+      "Agenda24",
+      "Pupeto",
+      "Spolek AI"
+    ],
+    "rule": "Dokud nejsou dodané vlastní zdroje, používat neutrální B2B styl bez loga a bez zdrojů jiné značky."
+  },
+  "colors": {
+    "background": [
+      "#F5F7FA",
+      "#FFFFFF"
+    ],
+    "primary": "#375A6C",
+    "text": "#17242C"
+  },
+  "style": "Neutrální profesionální styl pro firemní vzdělávání a rozvoj lidí.",
+  "promptRules": [
+    "Před každým obrazovým a video promptem načíst visual-manual/README.md a použít pouze konkrétní schválené reference z visual-manual/references/.",
+    "Bez falešného loga a bez automatického přebírání prvků jiné značky."
+  ],
+  "logoReferences": [],
+  "martinReferences": [],
+  "designReferences": [],
+  "consistency": "Čistý firemní vzdělávací vizuál bez cizích brandových zdrojů.",
+  "visualManual": {
+    "root": "visual-manual/README.md",
+    "imagePromptTemplate": "visual-manual/prompts/image-template.md",
+    "videoPromptTemplate": "visual-manual/prompts/video-template.md",
+    "referencesRoot": "visual-manual/references/",
+    "mandatoryRule": "Před vytvořením každého obrazového nebo video promptu načíst tento vizuální manuál a uvést konkrétní použité referenční soubory."
+  }
+}
