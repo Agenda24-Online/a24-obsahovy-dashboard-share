@@ -1,0 +1,389 @@
+{
+  "id": "agenda24",
+  "name": "Agenda24",
+  "projects": [
+    "Agenda24",
+    "osobní značka Martin"
+  ],
+  "conditionalProjects": {
+    "firemnilektor.cz": "Nepoužívat automaticky. Povolit jen při výslovné souvislosti s Martinem nebo službami Agenda24."
+  },
+  "brandIsolation": {
+    "enabled": true,
+    "assetOwner": "Agenda24",
+    "sourceFolder": "../../zdroje grafika/",
+    "allowedProjects": [
+      "Agenda24",
+      "osobní značka Martin"
+    ],
+    "forbiddenProjects": [
+      "Pupeto",
+      "Spolek AI",
+      "spolek.ai",
+      "firemnilektor.cz",
+      "Dobrý grafik",
+      "klientské zakázky"
+    ],
+    "rule": "Pravidla ani zdroje Agenda24 se nesmí automaticky použít pro jinou značku, web, klienta nebo projekt."
+  },
+  "logoPolicy": {
+    "onlyAllowedFile": "../../zdroje grafika/logo-agenda24-favicon-1000-x-1000.png",
+    "placement": "vlevo nahoře s dostatkem volného prostoru",
+    "rules": [
+      "Použít pouze samostatné originální logo 24 jako samostatnou vrstvu.",
+      "Nikdy vedle loga nepřidávat text Agenda24, AGENDA24 ani AGENDA 24.",
+      "Logo negenerovat, nepřekreslovat, nenapodobovat a neměnit jeho tvar, proporce, číslice, barvy ani pozadí.",
+      "Logo nesmí být součástí diagramu nebo dekorace.",
+      "Jako samostatný text dole lze použít pouze adresu Agenda24.cz."
+    ]
+  },
+  "martinIdentity": {
+    "references": [
+      "../../zdroje grafika/Martin Agenda 24 .webp",
+      "../../zdroje grafika/Agenda 24 -jajaja.webp"
+    ],
+    "required": [
+      "stejný obličej a věk",
+      "černé hranaté brýle",
+      "krátké lehce prošedivělé vlasy",
+      "lehce prošedivělý vous",
+      "realistická pleť",
+      "černé sako",
+      "černé tričko nebo košile",
+      "profesionální důvěryhodný vzhled"
+    ],
+    "forbidden": [
+      "změna identity",
+      "omlazení",
+      "jiný člověk",
+      "změna tvaru hlavy",
+      "přehnaně vyhlazená pleť",
+      "plastický reklamní obličej",
+      "jiné brýle",
+      "nepřirozené vlasy",
+      "karikatura",
+      "ilustrace místo fotografie"
+    ]
+  },
+  "poseRotation": {
+    "neverRepeatConsecutively": true,
+    "campaignVariation": "V jedné kampani použít dvě až tři související pózy.",
+    "poses": [
+      "ukazuje ukazováčkem na hlavní text",
+      "otevřenou dlaní ukazuje na diagram",
+      "drží tablet a druhou rukou ukazuje na obrazovku",
+      "drží složku nebo auditní dokument",
+      "ukazuje na jednu konkrétní ikonu",
+      "má obě ruce otevřené ve vysvětlujícím gestu",
+      "jednou rukou gestikuluje směrem k divákovi",
+      "stojí mírně bokem a dívá se na diagram",
+      "dívá se lehce nahoru směrem k nadpisu",
+      "dívá se lehce dolů na datovou vizualizaci",
+      "drží pero nebo stylus",
+      "má jednu ruku v kapse a druhou gestikuluje",
+      "má ruku u brady a analyzuje situaci",
+      "naklání se lehce dopředu jako při konzultaci",
+      "stojí před obrazovkou a prezentuje výsledek",
+      "ukazuje prstem na problémové místo",
+      "ukazuje oběma rukama rozdíl mezi dvěma variantami",
+      "drží mobil s otevřeným přehledem",
+      "sedí u pracovního stolu a dívá se do kamery",
+      "stojí v tříčtvrtečním postoji s přirozeným gestem ruky"
+    ]
+  },
+  "colors": {
+    "background": [
+      "#030712",
+      "#080B16"
+    ],
+    "primary": "#EC0044",
+    "text": "#FFFFFF",
+    "supporting": [
+      "tmavá navy",
+      "velmi tmavá šedá",
+      "bílá s nižší krytostí",
+      "tlumená magenta",
+      "jemné růžovočervené světelné akcenty"
+    ],
+    "forbidden": [
+      "žlutá",
+      "zlatá",
+      "oranžová",
+      "duhové neonové barvy",
+      "zelená jako hlavní barva",
+      "náhodné barevné gradienty"
+    ]
+  },
+  "style": "Moderní, prémiový, profesionální, technologický, B2B, věcný, čistý, kontrastní, důvěryhodný, sofistikovaný a prostorový bez laciných efektů.",
+  "backgroundRules": {
+    "minimumLayers": 3,
+    "layers": [
+      "tmavý základ",
+      "jemná technologická struktura",
+      "výraznější tematický motiv"
+    ],
+    "allowedMotifs": [
+      "technologická síť",
+      "datové linky",
+      "modulární panely",
+      "geometrické kružnice",
+      "bodové struktury",
+      "datové vlny",
+      "průsvitná rozhraní",
+      "magentové uzly",
+      "auditní kruhy",
+      "radarové linie",
+      "vrstvené gridy",
+      "kontrolní checklist",
+      "diagram toku dat",
+      "bezpečnostní symboly",
+      "analytické panely"
+    ],
+    "rule": "Motiv musí souviset s tématem a nesmí být náhodnou sci-fi dekorací."
+  },
+  "forbiddenVisuals": [
+    "humanoidní roboti",
+    "robotické hlavy",
+    "robotické ruce",
+    "kyborgové",
+    "mozek s obvody",
+    "podání ruky člověka a robota",
+    "cizí loga",
+    "náhodné tabulky a grafy",
+    "levný cyberpunk",
+    "komiksový nebo dětský styl",
+    "generická fotobanka"
+  ],
+  "generationPolicy": {
+    "imageModelCreates": [
+      "kompletní publikovatelnou grafiku s českými texty přímo v obrazu",
+      "hlavní nadpis, krátký podnadpis a 3–5 konkrétních bodů",
+      "bílé tematické ikony v magentových kruzích",
+      "tematickou infografiku nebo diagram s krátkými českými popisky",
+      "spodní závěrečný box s praktickou pointou nebo CTA",
+      "samostatnou kompozici pro každý cílový formát"
+    ],
+    "imageModelMustNotCreate": [
+      "vymyšlenou nebo překreslenou náhradu originálního loga 24",
+      "anglické texty, pseudo-text, zkomolenou češtinu nebo chybějící diakritiku",
+      "dlouhé odstavce a příliš drobné nečitelné písmo",
+      "samotný portrét bez informačního obsahu",
+      "prázdné dekorativní panely nebo obecnou sci-fi výplň bez významu"
+    ],
+    "postProduction": [
+      "obraz musí být již vygenerovaný jako kompletní česká infografika",
+      "postprodukce je jen volitelná oprava překlepu nebo přesné vložení originálního loga, nikoli povinné doplňování veškerých textů"
+    ],
+    "exactOutputSizes": {
+      "blog": "1600x900",
+      "linkedin": "1200x627",
+      "facebook": "1200x630",
+      "instagramPortrait": "1080x1350",
+      "instagramSquare": "1080x1080",
+      "story": "1080x1920"
+    },
+    "sizeRule": "Každý soubor musí mít přesně předepsaný počet pixelů a poměr stran. Rozměry se nesmějí nahrazovat přibližnou velikostí ani pouhým ořezem jiného formátu."
+  },
+  "typography": {
+    "rules": [
+      "krátké výrazné české texty",
+      "jasná hierarchie",
+      "dostatečné řádkování a volný prostor",
+      "bílý hlavní text",
+      "jedno klíčové slovo v #EC0044",
+      "krátký podnadpis",
+      "maximálně tři až pět krátkých bodů",
+      "žádné dlouhé odstavce"
+    ],
+    "calmAreaBehindText": true
+  },
+  "formats": {
+    "blogHero": {
+      "size": "1600x900",
+      "name": "Web a blog hero"
+    },
+    "linkedin": {
+      "size": "1200x627",
+      "name": "LinkedIn"
+    },
+    "facebook": {
+      "size": "1200x630",
+      "name": "Facebook"
+    },
+    "instagramPortrait": {
+      "size": "1080x1350",
+      "name": "Instagram portrait"
+    },
+    "instagramSquare": {
+      "size": "1080x1080",
+      "name": "Instagram square"
+    },
+    "story": {
+      "size": "1080x1920",
+      "name": "Instagram a Facebook Story"
+    }
+  },
+  "formatRule": "Každý formát musí mít vlastní kompozici, pozici a ořez Martina, nadpisu, diagramu, loga a bezpečných okrajů. Mechanické ořezy jsou zakázané.",
+  "composition": {
+    "logo": "vlevo nahoře, pouze originální favicon, bez textu vedle",
+    "martin": "zpravidla vpravo, realistické ruce, nezakrytý obličej, nelepit na okraj a nezakrývat nadpis",
+    "text": "zpravidla vlevo, dostatek prostoru, mimo obličej a bezpečně od okrajů",
+    "thematicMotif": "mezi textem a Martinem nebo za Martinem, tematicky relevantní a nerušivý"
+  },
+  "requiredOutputStructure": [
+    "koncept kampaně",
+    "textová hierarchie",
+    "samostatný prompt pro každý formát",
+    "společný negativní prompt",
+    "přesný layout každého formátu",
+    "kontrolní seznam"
+  ],
+  "negativePrompt": "Žádná samotná fotografie nebo portrét bez informací, žádný obraz bez nadpisu, žádné prázdné dekorativní obrazovky, žádná obecná sci-fi výplň bez významu, žádný anglický text, pseudo-text, zkomolená čeština, chybějící diakritika, drobné nečitelné písmo, dlouhé odstavce, deformované ruce, změněná identita Martina, falešné logo, překreslené číslo 24, cizí značky, watermarky, laciný stockový vzhled.",
+  "checklist": [
+    "přímo v obrazu je výrazný český nadpis a krátký podnadpis",
+    "v obrazu jsou 3–5 konkrétních bodů s bílými ikonami v magentových kruzích",
+    "obraz obsahuje tematickou infografiku nebo diagram s českými popisky",
+    "dole je výrazný závěrečný box s praktickou pointou nebo CTA",
+    "všechny texty jsou čitelné, česky a se správnou diakritikou",
+    "výsledek není jen portrét ani dekorativní pozadí",
+    "originální logo je použito beze změny, nebo je pro něj ponecháno čisté místo",
+    "každý formát má vlastní sazbu a není pouhým ořezem"
+  ],
+  "contentOutputRules": {
+    "scope": "Pouze Agenda24. Nepřenášet automaticky na jinou značku.",
+    "requiredOutputs": [
+      "SEO titulek",
+      "H1",
+      "perex",
+      "osnova článku",
+      "kompletní blogový článek",
+      "závěr článku",
+      "meta title",
+      "meta description",
+      "URL slug",
+      "LinkedIn příspěvek",
+      "Facebook příspěvek",
+      "Instagram caption",
+      "text do grafiky",
+      "CTA",
+      "alt text",
+      "krátký newsletterový text"
+    ],
+    "blog": {
+      "standardWords": [
+        1000,
+        1500
+      ],
+      "minimumWords": 800,
+      "maximumWords": 2000,
+      "requiredParts": [
+        "SEO titulek",
+        "H1",
+        "perex",
+        "H2 a případně H3",
+        "úvod do problému",
+        "souvislosti",
+        "konkrétní rizika",
+        "praktické firemní příklady",
+        "doporučený postup",
+        "konkrétní kroky",
+        "závěr",
+        "přirozené CTA",
+        "meta title",
+        "meta description",
+        "URL slug"
+      ],
+      "rule": "Blogový draft vždy znamená kompletní publikovatelný článek. Každý odstavec musí obsahovat konkrétní informaci, vysvětlení, příklad nebo doporučení."
+    },
+    "linkedin": {
+      "characters": [
+        1200,
+        2200
+      ],
+      "words": [
+        180,
+        350
+      ],
+      "requiredParts": [
+        "silný hook",
+        "aktuálnost",
+        "praktický firemní příklad",
+        "riziko nebo důsledek",
+        "doporučený postup",
+        "jasný názor",
+        "CTA nebo otázka"
+      ],
+      "style": "samostatný odborný miničlánek v krátkých mobilních odstavcích bez zbytečných emotikonů"
+    },
+    "facebook": {
+      "characters": [
+        700,
+        1500
+      ],
+      "words": [
+        120,
+        250
+      ],
+      "requiredParts": [
+        "uvedení problému",
+        "jednoduché vysvětlení",
+        "konkrétní firemní situace",
+        "praktická rada",
+        "CTA"
+      ]
+    },
+    "instagram": {
+      "characters": [
+        500,
+        1000
+      ],
+      "words": [
+        80,
+        160
+      ],
+      "requiredParts": [
+        "hook",
+        "základní vysvětlení",
+        "tři až pět bodů",
+        "CTA"
+      ]
+    },
+    "graphicText": {
+      "requiredParts": [
+        "jeden hlavní nadpis",
+        "volitelný krátký podnadpis",
+        "maximálně tři krátké body"
+      ],
+      "rule": "Do grafiky nepatří celý příspěvek."
+    },
+    "originality": [
+      "Každý kanál má vlastní formulaci, délku a strukturu.",
+      "Nekopírovat stejný odstavec na všechny sítě.",
+      "LinkedIn není zkrácený perex blogu.",
+      "Používat konkrétní příklady a neopakovat obecné fráze."
+    ]
+  },
+  "logoReferences": [
+    "../../zdroje grafika/logo-agenda24-favicon-1000-x-1000.png"
+  ],
+  "martinReferences": [
+    "../../zdroje grafika/Martin Agenda 24 .webp",
+    "../../zdroje grafika/Agenda 24 -jajaja.webp"
+  ],
+  "designReferences": [
+    "../../zdroje grafika/fb.png",
+    "../../zdroje grafika/in.png"
+  ],
+  "promptRules": [
+    "Před každým obrazovým a video promptem načíst visual-manual/README.md a použít pouze konkrétní schválené reference z visual-manual/references/.",
+    "Dodržet logoPolicy, martinIdentity, poseRotation, backgroundRules, generationPolicy, typography, formats, composition a checklist."
+  ],
+  "consistency": "Prémiová tmavá Agenda24 kompozice s autentickým Martinem, tematickým datovým motivem a přesnou postprodukční typografií.",
+  "visualManual": {
+    "root": "visual-manual/README.md",
+    "imagePromptTemplate": "visual-manual/prompts/image-template.md",
+    "videoPromptTemplate": "visual-manual/prompts/video-template.md",
+    "referencesRoot": "visual-manual/references/",
+    "mandatoryRule": "Před vytvořením každého obrazového nebo video promptu načíst tento vizuální manuál a uvést konkrétní použité referenční soubory."
+  }
+}
