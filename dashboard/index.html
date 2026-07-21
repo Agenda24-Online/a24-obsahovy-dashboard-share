@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Redakční nástěnka obsahových karet Agenda24">
+  <title>Agenda24 – Obsahový radar</title>
+  <link rel="stylesheet" href="styles.css?v=20260716-media-picker-1">
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Agenda24 Obsahový radar – domů"><span class="brand-mark">A24</span><span><strong>Obsahový radar</strong><small>Redakční nástěnka</small></span></a>
+    <div class="topbar-meta"><span class="live-dot"></span>Lokální pracovní nástroj</div>
+  </header>
+  <main>
+    <section class="hero"><div><p class="eyebrow">Obsahové centrum</p><h1>Co dnes posuneme<br><span>do světa?</span></h1><p class="hero-copy">Ranní témata, rozpracované texty i publikace na jednom místě.</p></div><div class="hero-date" id="currentDate"></div></section>
+    <section class="stats" aria-label="Souhrn obsahu">
+      <article><span class="stat-icon magenta">◈</span><div><strong id="statAll">0</strong><small>Všechny karty</small></div></article>
+      <article><span class="stat-icon violet">◐</span><div><strong id="statOpen">0</strong><small>Rozpracováno</small></div></article>
+      <article><span class="stat-icon cyan">✓</span><div><strong id="statReady">0</strong><small>Připraveno</small></div></article>
+      <article><span class="stat-icon green">↗</span><div><strong id="statPublished">0</strong><small>Dokončeno</small></div></article>
+    </section>
+    <section class="workspace">
+      <div class="workspace-head"><div><p class="eyebrow">Pracovní plocha</p><h2>Obsahové karty <span id="resultCount"></span></h2></div><label class="search"><span>⌕</span><input id="searchInput" type="search" placeholder="Hledat téma nebo štítek…" autocomplete="off"></label></div>
+      <div class="filters" aria-label="Filtry obsahu">
+        <label>Projekt<select id="projectFilter"><option value="all">Všechny projekty</option></select></label>
+        <label>Stav<select id="statusFilter"><option value="all">Všechny stavy</option></select></label>
+        <label>Datum přehledu<select id="dateFilter"><option value="all">Všechny dny</option></select></label>
+        <button id="resetFilters" class="reset" type="button">Vyčistit filtry</button>
+        <div class="quick-filters" aria-label="Rychlé filtry">
+          <label class="filter-pill"><input type="checkbox" data-quick-filter="publication"><span>Pouze čeká na publikaci</span></label>
+          <label class="filter-pill"><input type="checkbox" data-quick-filter="graphic"><span>Pouze čeká na grafiku</span></label>
+          <label class="filter-pill"><input type="checkbox" data-quick-filter="blog"><span>Pouze blogy</span></label>
+          <label class="filter-pill"><input type="checkbox" data-quick-filter="social"><span>Pouze sociální sítě</span></label>
+        </div>
+      </div>
+      <div id="cardGrid" class="card-grid" aria-live="polite"></div>
+      <div id="emptyState" class="empty" hidden><span>◇</span><h3>Žádná karta neodpovídá filtrům</h3><p>Zkuste změnit projekt, stav nebo hledaný výraz.</p></div>
+    </section>
+  </main>
+  <footer><span>Agenda24 – Obsahový radar</span><span>Lokální redakční nástěnka</span></footer>
+
+  <div id="detailOverlay" class="detail-overlay" hidden></div>
+  <aside id="detailPanel" class="detail-panel" aria-label="Detail obsahové karty" aria-hidden="true">
+    <div class="detail-header">
+      <div><p class="eyebrow">Detail karty</p><h2 id="detailTitle"></h2><p id="detailMeta" class="detail-meta"></p></div>
+      <button id="closeDetail" class="close-detail" type="button" aria-label="Zavřít detail">×</button>
+    </div>
+    <div id="publishActions" class="detail-actions publishing-actions" aria-label="Kopírování finálních publikačních výstupů">
+      <button type="button" data-publish-copy="blogEnfold">Kopírovat blog pro Enfold</button>
+      <button type="button" data-publish-copy="facebookPublish">Kopírovat Facebook pro publikaci</button>
+      <button type="button" data-publish-copy="linkedinPublish">Kopírovat LinkedIn pro publikaci</button>
+      <button type="button" data-publish-copy="instagramPublish">Kopírovat Instagram pro publikaci</button>
+      <button type="button" data-publish-copy="tiktokHook">Kopírovat TikTok hook</button>
+      <button type="button" data-publish-copy="tiktokScript">Kopírovat TikTok scénář</button>
+      <button type="button" data-publish-copy="tiktokSpoken">Kopírovat TikTok mluvený text</button>
+      <button type="button" data-publish-copy="tiktokOnscreen">Kopírovat TikTok text na obrazovku</button>
+      <button type="button" data-publish-copy="tiktokPublish">Kopírovat TikTok popisek pro publikaci</button>
+      <button type="button" data-publish-copy="tiktokHashtags">Kopírovat TikTok hashtagy</button>
+      <button type="button" data-publish-copy="tiktokVideoPrompt">Kopírovat TikTok prompt na video</button>
+      <button type="button" data-publish-copy="tiktokCoverPrompt">Kopírovat TikTok prompt na cover</button>
+      <button type="button" data-publish-copy="youtubePublish">Kopírovat YouTube Shorts popisek</button>
+      <button type="button" data-publish-copy="graphicText">Kopírovat text do grafiky</button>
+      <button type="button" data-publish-copy="imagePrompt">Kopírovat prompt obrázku</button>
+      <button type="button" data-publish-copy="videoPrompt">Kopírovat prompt videa</button>
+      <button type="button" data-publish-copy="featureCodexPrompt">Kopírovat prompt pro Codex k funkci</button>
+    </div>
+    <div id="generateActions" class="generate-actions" aria-label="Automatické vytvoření obsahu">
+      <button type="button" data-generate="blog">Vygenerovat blog</button>
+      <button type="button" data-generate="social">Vygenerovat sociální texty</button>
+      <button type="button" data-generate="image">Vygenerovat prompt obrázku</button>
+      <button type="button" data-generate="video">Vygenerovat prompt videa</button>
+      <button type="button" data-generate="feature">Vygenerovat návrh funkce / pluginu</button>
+      <button type="button" data-brand-package hidden>Připravit obrázek pro ChatGPT</button>
+    </div>
+    <div id="exportActions" class="export-actions" aria-label="Export karty">
+      <span>Exportovat:</span>
+      <button type="button" data-export="blog">blog.md</button>
+      <button type="button" data-export="social">social.md</button>
+      <button type="button" data-export="image">image-prompt.md</button>
+      <button type="button" data-export="video">video-prompt.md</button>
+      <button type="button" class="package-export-button" data-package-export>Stáhnout publikační balíček ZIP</button>
+    </div>
+    <section id="mediaBundle" class="media-bundle" aria-labelledby="mediaBundleTitle">
+      <div class="media-bundle-head"><div><p class="eyebrow">Obrazový balíček</p><h3 id="mediaBundleTitle">Obrázky pro jednotlivé kanály</h3></div><span id="mediaBundleCount" class="media-count">0/4</span></div>
+      <p id="mediaBundlePath" class="media-path"></p>
+      <div id="mediaBundleGrid" class="media-grid"></div>
+      <p class="media-help">Klikněte na kanál a vyberte složku. Dashboard vybere pouze obrázek se správným poměrem stran a upřednostní přesný rozměr.</p>
+    </section>
+    <section class="detail-status"><h3>Stav zpracování a publikace</h3><div id="detailSteps" class="steps detail-steps"></div></section>
+    <div id="detailSections" class="detail-sections"></div>
+  </aside>
+  <script src="jszip.min.js?v=3.10.1-fixed"></script>
+  <script src="app.js?v=20260716-publication-package-1"></script>
+</body>
+</html>
