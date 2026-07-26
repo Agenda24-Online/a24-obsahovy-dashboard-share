@@ -49,7 +49,7 @@ const sectionDefinitions = [
   ["videoReferences", "Reference k videu", ["Reference k videu"]],
   ["imagePrompt", "Prompt na obrázek", ["Prompt na obrázek"]],
   ["videoPrompt", "Prompt na video", ["Prompt na video", "Scénář 10 s videa", "Mluvený text pro video"]],
-  ["flowShort", "Gemini Flow / Omni – marketingový short (10 s)", ["Gemini Flow / Omni – marketingový short (10 s)"]],
+  ["flowShort", "Gemini Flow / Omni – short (10 s)", ["Gemini Flow / Omni – short (10 s)", "Gemini Flow / Omni – marketingový short (10 s)"]],
   ["flowSeries", "Gemini Flow / Omni – rozvinutý scénář (volitelně)", ["Gemini Flow / Omni – rozvinutý scénář (volitelně)"]]
 ];
 
@@ -344,7 +344,8 @@ function hasFeature(card) {
 function outputKinds(card) {
   const kinds = [];
   if (isBlog(card) || typesLower(card).some(type => ["newsletter", "landing page", "interní nápad"].includes(type))) kinds.push("Obsah");
-  if (isSocial(card) || typesLower(card).some(type => ["obchodní nabídka", "lead"].includes(type))) kinds.push("Marketing");
+  if (isSocial(card)) kinds.push("Sociální sítě");
+  if (card.project === "Agenda24" && typesLower(card).some(type => ["obchodní nabídka", "lead"].includes(type))) kinds.push("Marketing");
   if (hasFeature(card)) kinds.push("Nástroj / funkce");
   return kinds.length ? kinds : ["Obsah"];
 }
@@ -600,42 +601,146 @@ function fitMetaDescription(value, min = 140, max = 155) {
   return text;
 }
 
+function crossProjectLeak(card, sections) {
+  const text = Object.values(sections).join("\n").toLocaleLowerCase("cs");
+  const auditMarkers = ["obchod si pořídí vlastní nástroj", "mapa datového toku", "vedení firmy proto potřebuje", "sedm různých účtů", "nadměrná oprávnění"];
+  return card.project !== "Agenda24" && auditMarkers.some(marker => text.includes(marker));
+}
+
+function pupetoContentLeak(card, sections) {
+  if (card.project !== "Pupeto") return false;
+  const text = Object.values(sections).join("\n").toLocaleLowerCase("cs");
+  const forbiddenMarkers = [
+    "agenda24", "spolek ai", "firemní audit", "vedení firmy", "firemní proces",
+    "firemních týmů", "marketingový", "online marketing", "lead generation",
+    "b2b", "mapa datového toku", "sdílené účty", "nadměrná oprávnění",
+    "nevyužívané licence", "zaměstnanci", "oddělení firmy",
+    "jednorázový obsahový nápad", "příležitost nabídnout", "obchodní cíl",
+    "marketingový short", "zákaznický tok"
+  ];
+  return forbiddenMarkers.some(marker => text.includes(marker));
+}
+
+function clearGeneratedProjectOutput(sections) {
+  [
+    "recommendation", "blogTitle", "seoTitle", "h1", "perex", "blogOutline",
+    "blogDraft", "blogEnfold", "conclusion", "metaTitle", "metaDescription",
+    "focusKeyphrase", "seoKeywords", "urlSlug", "cta", "newsletter",
+    "facebook", "linkedin", "instagram", "facebookPublish", "linkedinPublish",
+    "instagramPublish", "youtubePublish", "graphicText", "tiktokFormat",
+    "tiktokHook", "tiktokScript", "tiktokSpoken", "tiktokOnscreen",
+    "tiktokStoryboard", "tiktokPublish", "tiktokCta", "tiktokHashtags",
+    "tiktokVideoPrompt", "tiktokCoverPrompt", "tiktokGoal", "tiktokStrategy",
+    "flowShort", "flowSeries", "videoPrompt"
+  ].forEach(key => delete sections[key]);
+}
+
+function projectCopy(card) {
+  const subject = card.title;
+  const summary = card.summary;
+  if (card.project === "Pupeto") {
+    const lostPet = /ztrát|ztracen|zaběhl|uteč/i.test(subject);
+    return lostPet ? {
+      audience: "majitele psů a koček",
+      action: "rychle a bezpečně zahájit hledání ztraceného mazlíčka",
+      intro: "Když se pes nebo kočka ztratí, první chvíle bývají chaotické. Pomůže klidný postup: přesně určit místo a čas posledního spatření, zapojit lidi v okolí a připravit údaje pro rychlé sdílení.",
+      steps: ["Zapište si místo, čas, směr pohybu, aktuální fotografii a rozpoznávací znaky zvířete.", "Hledejte nejdřív v bezprostředním okolí; volejte známým hlasem, prohlédněte úkryty a nehoňte vystrašené zvíře.", "Požádejte sousedy o kontrolu zahrad, garáží a kamer; informujte obecní útulek, veterinární ordinace a registr čipu, pokud jej zvíře má."],
+      result: "Máte zmapované první kroky, kontakty a informace, které další lidé skutečně potřebují, aby mohli pomoci.",
+      cta: "Uložte si tento postup pro případ, že ho budete někdy potřebovat.",
+      social: "Prvních třicet minut rozhoduje hlavně o tom, zda zůstane hledání přehledné a zda se důležité údaje dostanou ke správným lidem."
+    } : {
+      audience: "majitele psů a koček",
+      action: "udělat bezpečný a proveditelný krok pro svého mazlíčka",
+      intro: "Toto téma patří do běžného života se zvířetem. Článek má dát klidný, konkrétní návod bez strašení a bez prázdných obecných rad.",
+      steps: ["Zastavte se a ověřte, co se skutečně stalo.", "Připravte si jen údaje a kontakty, které jsou teď potřeba.", "Postupujte po malých krocích a průběžně si zapisujte, co už je vyřešené."],
+      result: "Majitel má po přečtení jasný postup a ví, kdy už je vhodné kontaktovat veterináře, útulek nebo jinou konkrétní pomoc.",
+      cta: "Uložte si postup a sdílejte ho s člověkem, který se o zvíře stará.",
+      social: "Praktický návod pro majitele psů a koček: bez paniky, bez zbytečných rad navíc a s jasným dalším krokem."
+    };
+  }
+  if (card.project === "Firemní lektor") return {
+    audience: "lidi, kteří se chtějí naučit dovednost použitelnou v práci",
+    action: "vyzkoušet si postup v praxi",
+    intro: "Téma má být vysvětlené srozumitelně a na konkrétním pracovním příkladu. Nejde o teorii pro teorii, ale o dovednost, kterou si lze hned vyzkoušet.",
+    steps: ["Pojmenujte jednu konkrétní situaci z praxe.", "Rozdělte si postup na malé zvládnutelné kroky.", "Výsledek si ověřte na vlastním příkladu a poznamenejte si, co chcete příště zlepšit."],
+    result: "Čtenář ví, co si má prakticky vyzkoušet a jak pozná, že se posunul.",
+    cta: "Chci si téma vyzkoušet na praktickém školení.",
+    social: "Jedna použitelná dovednost má větší cenu než deset obecných pouček."
+  };
+  if (card.project === "Spolek AI") return {
+    audience: "firmy a lidi, kteří zavádějí AI do reálné práce",
+    action: "zavést AI s jasnou odpovědností a ověřitelným přínosem",
+    intro: "AI není samoúčelný cíl. Smysl má tehdy, když řeší konkrétní práci, má jasná pravidla a člověka, který odpovídá za výsledek.",
+    steps: ["Vyberte jednu konkrétní práci, kde je problém nebo zdržení.", "Určete vstupy, lidskou kontrolu a hranici, kam automatizace nesmí.", "Ověřte výsledek na malém pilotu a rozhodněte podle dat, ne podle dojmu."],
+    result: "Tým získá malý, kontrolovatelný postup místo vágního slibu o AI.",
+    cta: "Chci probrat bezpečný první krok se Spolkem AI.",
+    social: "AI má pomáhat lidem dělat práci lépe, ne zakrýt nejasný proces."
+  };
+  return {
+    audience: "majitele a vedoucí menších firem",
+    action: "zlepšit konkrétní webový, marketingový nebo provozní proces",
+    intro: "Nezačínejte dalším nástrojem. Začněte konkrétním problémem, cílem a výsledkem, který jde ověřit.",
+    steps: ["Vyberte jeden proces nebo problém s dopadem na zákazníka.", "Určete odpovědnou osobu, výchozí stav a měřitelný cíl.", "Proveďte malý test, vyhodnoťte ho a teprve pak řešení rozšiřujte."],
+    result: "Firma získá rozhodnutí opřené o konkrétní výsledek, ne o obecný pocit.",
+    cta: "Chci ověřit první praktický krok s Agenda24.",
+    social: "Méně chaosu, více konkrétních kroků a výsledků, které lze změřit."
+  };
+}
+
 function generateBlog(force = false) {
   if (!isBlog(activeCard) && !force) return;
-  const subject = activeCard.title;
-  const slug = subject.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-  activeSections.blogTitle ||= subject;
-  activeSections.seoTitle ||= `${subject}: praktický postup pro firmy | Agenda24`;
-  activeSections.h1 ||= subject;
-  activeSections.perex ||= `${activeCard.summary} Pro vedení malé nebo střední firmy je podstatné vědět, co přesně zkontrolovat, komu přidělit odpovědnost a jak poznat, že přijaté opatření skutečně funguje. Tento článek převádí téma do konkrétního firemního postupu.`;
-  activeSections.blogOutline ||= `- Proč se téma „${subject}“ dostává na stůl vedení firmy\n- Co je potřeba konkrétně zjistit a zdokumentovat\n- Kde vznikají provozní, bezpečnostní a obchodní rizika\n- Praktický příklad z malé nebo střední firmy\n- Doporučený postup krok za krokem\n- Odpovědnosti, výstupy a měřitelné ukazatele\n- Jak udržet řešení funkční i po prvním zavedení`;
-  const fullArticle = `## Proč se téma dostává na stůl vedení firmy\n\n${activeCard.summary} Problém obvykle nevzniká jedním velkým rozhodnutím, ale součtem drobných kroků v různých odděleních. Obchod si pořídí vlastní nástroj, marketing začne používat jinou službu, vedení experimentuje s automatizací a zaměstnanci hledají rychlejší cestu k rutinním úkolům. Pokud firma nemá společný přehled, nedokáže spolehlivě určit náklady, odpovědnost, datová rizika ani skutečný přínos.\n\nVedení proto potřebuje rozhodovací podklad, nikoli obecné doporučení. U každého používaného řešení má být zřejmé, kdo jej vlastní, kdo k němu má přístup, jaký proces podporuje, jaká data zpracovává, kolik stojí a co se stane při chybě nebo výpadku. Bez těchto informací nelze odpovědně rozhodnout, co zachovat, co upravit a co zastavit.\n\n## Co má firma konkrétně zmapovat\n\nPraktická inventura začíná seznamem nástrojů a skutečných způsobů použití. Nestačí opsat faktury z účetnictví, protože část služeb může běžet na bezplatných účtech nebo soukromých registracích zaměstnanců. Vedoucí jednotlivých oddělení proto shromáždí název služby, vlastníka účtu, počet uživatelů, účel, typ vstupních dat, napojené systémy, oprávnění a způsob kontroly výstupu. Výsledkem je jedna tabulka, kterou schválí odpovědný člen vedení.\n\nDruhým výstupem je jednoduchá mapa datového toku. Ta ukazuje, odkud informace přicházejí, kdo je do nástroje vkládá, kde se ukládají a kam pokračuje výstup. Typickým problémem je kopírování nabídek, smluv, osobních údajů zákazníků nebo interních reportů do služby, u níž nikdo neověřil podmínky, místo zpracování ani dobu uchování. Mapa musí takové místo označit konkrétním nástrojem a konkrétním typem dat.\n\n## Kde typicky vzniká chyba\n\nPrvní častou chybou je nejasný vlastník. Nástroj používá celé oddělení, ale nikdo neodpovídá za nastavení, přístupy, náklady a pravidelnou kontrolu. Druhou chybou jsou nadměrná oprávnění: integrace získá přístup k celé schránce, disku nebo databázi, přestože pro daný úkol potřebuje pouze omezený rozsah. Třetím rizikem je nekontrolovaný výstup, který zaměstnanec bez ověření odešle zákazníkovi nebo použije při obchodním rozhodnutí.\n\nDopad nemusí být pouze bezpečnostní. Chybný údaj v nabídce může snížit marži, nepřesná odpověď zákazníkovi poškodit důvěru a automatizace bez záznamu zkomplikovat reklamaci. Firma proto u každého kritického použití stanoví, kdo výstup kontroluje, podle jakého seznamu a kde zůstane dohledatelný záznam. U nízkorizikových úloh může stačit namátková kontrola; u cen, smluv, osobních údajů nebo veřejných tvrzení má být schválení povinné.\n\n## Praktický příklad z firemního prostředí\n\nPředstavme si firmu s třiceti zaměstnanci. Marketing používá nástroj pro návrhy textů, obchod nahrává podklady zákazníků do asistenta a administrativa automaticky zpracovává zápisy z porad. Audit odhalí sedm různých účtů, dvě nevyužívaná předplatná, sdílené přihlašovací údaje a jeden nástroj s přístupem k celému cloudovému disku. Nejde o důvod všechny služby zakázat. Firma zruší duplicity, převede účty pod firemní správu, omezí oprávnění a stanoví, které dokumenty se nesmí vkládat bez anonymizace.\n\nMěřitelným výsledkem není počet napsaných směrnic. Výsledkem je úplný seznam nástrojů, přidělený vlastník u každé položky, odstraněné sdílené účty, omezená oprávnění a prokazatelná kontrola citlivých výstupů. Vedení může současně porovnat měsíční náklady a zrušit služby, které nepřinášejí využití. Audit tak vedle snížení rizika často přinese i přímou úsporu.\n\n## Doporučený postup krok za krokem\n\n1. Vedení určí garanta, který má pravomoc získat informace od všech oddělení a předložit závěry. Nemusí jít o právníka; důležitá je znalost procesů a přístup k rozhodovatelům.\n2. Vedoucí týmů během jednoho týdne vyplní společný seznam používaných nástrojů, účtů, dat, integrací a odpovědností.\n3. Garant označí případy s osobními údaji, firemním know-how, automatickým odesíláním nebo širokými oprávněními jako prioritní.\n4. U prioritních případů firma ověří smluvní nastavení, přístupy, uchování dat a kontrolu výstupů.\n5. Vedení schválí krátká pravidla: povolené nástroje, zakázaná data, povinné schválení a postup při incidentu.\n6. Po třiceti dnech proběhne kontrola, zda byly účty převedeny, oprávnění omezená a zaměstnanci pravidla skutečně používají.\n\n## Kdo odpovídá a jaký má být výstup\n\nGarant auditu koordinuje sběr dat a udržuje centrální evidenci. Vedoucí oddělení odpovídají za úplnost informací ze svého týmu. Správce IT ověřuje účty, integrace a technická oprávnění. Vedení rozhoduje o přijatelném riziku a schvaluje výjimky. Pokud firma využívá externí dodavatele, jejich přístupy a nástroje patří do stejné evidence; smlouva sama o sobě nenahrazuje provozní kontrolu.\n\nMinimálním výstupem je registr nástrojů, mapa citlivých dat, seznam rizik s prioritou, vlastník nápravného opatření a termín. Každé opatření má mít ověřitelnou podmínku dokončení. Místo vágního „zvýšit bezpečnost“ se zapíše například „do 15. srpna odebrat přístup integrace k celé schránce a ponechat pouze složku objednávek; odpovídá správce IT; ověření snímkem nastavení a testem“.\n\n## Jak poznat, že řešení funguje\n\nPo měsíci musí firma umět odpovědět na pět otázek: Známe všechny používané nástroje? Má každý účet vlastníka? Víme, jaká data do něj vstupují? Jsou oprávnění omezená na nezbytné minimum? Kontroluje člověk výstupy s obchodním, právním nebo reputačním dopadem? Pokud některá odpověď zůstává neurčitá, audit ještě není uzavřen.\n\nDlouhodobě se sleduje počet neschválených nástrojů, sdílených účtů, nadměrných oprávnění, incidentů a nevyužívaných licencí. Kontrola se opakuje při nástupu nového nástroje, změně integrace nebo alespoň jednou za půl roku. Tím se z jednorázového dokumentu stane jednoduchý řídicí proces, který drží krok s reálnou prací firmy.`;
-  const enrichedArticle = `${fullArticle}\n\n## Jak nastavit průběžnou kontrolu\n\nSoučástí pravidel má být jednoduchý způsob hlášení nového použití. Zaměstnanec vyplní účel, typ dat, požadovaná oprávnění a očekávaný přínos. Odpovědná osoba rychle rozhodne, zda je použití běžné, vyžaduje omezení, nebo musí projít podrobnější kontrolou. Firma tím nesnižuje iniciativu lidí, ale zabraňuje tomu, aby se užitečný experiment proměnil v nekontrolovaný trvalý proces.\n\nDobře nastavená evidence pomáhá také při nástupu a odchodu zaměstnanců. Přístupy lze předat nebo odebrat podle seznamu, firemní historie nezůstává na soukromém účtu a vedení vidí, zda služba stále odpovídá původnímu účelu. To je konkrétní provozní přínos, který lze ověřit při každé personální změně.\n\nJednou za čtvrtletí má garant předložit vedení krátký přehled změn: nové nástroje, uzavřená opatření, otevřená rizika, incidenty a nevyužívané licence. Kontrola tak nezatěžuje každodenní provoz, ale současně brání tomu, aby se evidence po prvním auditu přestala používat.`;
-  const publishableArticle = `${enrichedArticle}\n\n## Co má vedení dostat na jednu stránku\n\nZávěrečný manažerský přehled nemá kopírovat celý pracovní registr. Na jedné stránce shrne počet evidovaných řešení, nejzávažnější otevřená rizika, opatření po termínu, náklady na nevyužívané služby a rozhodnutí, která vedení musí přijmout. Každá položka obsahuje vlastníka a datum další kontroly. Díky tomu se diskuse neztratí v technických detailech a vedení může určit prioritu podle dopadu na zákazníky, provoz, finance a pověst firmy.\n\nUžitečné je také oddělit okamžité opravy od dlouhodobých změn. Sdílené heslo nebo zbytečné oprávnění lze odstranit ihned. Změna procesu schvalování, školení týmu nebo náhrada nevhodného nástroje potřebuje plán, rozpočet a termín. Toto rozdělení brání tomu, aby jednoduchá rizika čekala na velký projekt a aby složitá opatření zůstala bez odpovědného rozhodnutí.`;
-  if (force || !activeSections.blogDraft) activeSections.blogDraft = publishableArticle;
-  activeSections.conclusion ||= `Praktický přístup k tématu „${subject}“ nezačíná zákazem ani nákupem dalšího nástroje. Začíná úplnou evidencí, konkrétní odpovědností a ověřitelnými opatřeními. Vedení pak rozhoduje podle skutečných dat a firma může využívat nové možnosti bez zbytečných provozních, bezpečnostních a reputačních rizik.`;
-  activeSections.cta ||= `Chcete téma „${subject}“ převést do praktického řešení? Ozvěte se a projdeme vhodný první krok.`;
-  activeSections.metaTitle ||= `${subject} – praktický návod | Agenda24`;
-  const metaCandidate = `${activeCard.summary} Získejte praktický postup, konkrétní kroky a doporučení, která lze využít ve firmě.`;
-  activeSections.metaDescription ||= fitMetaDescription(metaCandidate);
-  activeSections.focusKeyphrase ||= subject;
-  activeSections.seoKeywords ||= [subject, `${subject} pro firmy`, "praktický postup", "firemní procesy", "automatizace", "Agenda24"].join(", ");
-  activeSections.urlSlug ||= slug;
+  const copy = projectCopy(activeCard);
+  const title = activeCard.title;
+  const slug = title.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const article = [
+    "## Co je v této situaci nejdůležitější",
+    copy.intro + "\n\n" + activeCard.summary,
+    "## Co udělat jako první",
+    copy.steps.map((step, index) => (index + 1) + ". " + step).join("\n"),
+    "## Na co si dát pozor",
+    "Nevycházejte z domněnek ani z univerzálních šablon. Držte se konkrétní situace, ověřených informací a možností, které jsou pro " + copy.audience + " skutečně dostupné.",
+    "## Jak poznat, že postup pomohl",
+    copy.result,
+    "## Další krok",
+    copy.cta
+  ].join("\n\n");
+  const html = "<h1>" + title + "</h1>\n\n<p class=\"perex\">" + activeCard.summary + "</p>\n\n<h2>Co je v této situaci nejdůležitější</h2>\n\n<p>" + copy.intro + "</p>\n\n<h2>Co udělat jako první</h2>\n\n<ol>\n" + copy.steps.map(step => "<li>" + step + "</li>").join("\n") + "\n</ol>\n\n<h2>Na co si dát pozor</h2>\n\n<p>Nevycházejte z domněnek ani z univerzálních šablon. Držte se konkrétní situace a ověřených informací.</p>\n\n<h2>Jak poznat, že postup pomohl</h2>\n\n<p>" + copy.result + "</p>\n\n<p><strong>CTA:</strong> " + copy.cta + "</p>";
+  const values = {
+    blogTitle: title,
+    seoTitle: title + " | praktický návod",
+    h1: title,
+    perex: activeCard.summary,
+    blogOutline: ["Co je v této situaci nejdůležitější", "Co udělat jako první", "Na co si dát pozor", "Jak poznat, že postup pomohl", "Další krok"].map(x => "- " + x).join("\n"),
+    blogDraft: article,
+    blogEnfold: html,
+    conclusion: copy.result,
+    cta: copy.cta,
+    metaTitle: title + " | praktický návod",
+    metaDescription: (activeCard.summary + " Praktický návod: co udělat jako první a na co nezapomenout.").slice(0, 155),
+    focusKeyphrase: title.toLocaleLowerCase("cs"),
+    seoKeywords: activeCard.project === "Pupeto"
+      ? [title, "psi a kočky", "péče o mazlíčky", "praktický návod"].join(", ")
+      : activeSections.seoKeywords || "",
+    urlSlug: slug
+  };
+  Object.entries(values).forEach(([key, value]) => { if (force || !activeSections[key]) activeSections[key] = value; });
 }
 
 function generateSocial(force = false) {
   if (!isSocial(activeCard) && !force) return;
+  const copy = projectCopy(activeCard);
   const title = activeCard.title;
-  const facebook = `${title}\n\n${activeCard.summary}\n\nVe firmě se podobná situace často projeví nenápadně: různé týmy používají vlastní nástroje, účty nebo postupy, ale vedení nemá společný přehled o odpovědnosti, datech a nákladech. Chyba se ukáže až ve chvíli, kdy odejde zaměstnanec, selže integrace nebo se nesprávný výstup dostane k zákazníkovi.\n\nPraktická rada: sepište používaná řešení do jedné evidence. U každého uveďte vlastníka, účel, vstupní data, oprávnění a způsob kontroly. Pak vyberte tři nejrizikovější případy a určete konkrétní opatření, odpovědnou osobu a termín.\n\n${activeSections.cta || `Chcete připravit praktický postup pro téma „${title}“? Ozvěte se Agenda24.`}`;
-  const linkedin = `${title} není okrajové technické téma. Je to otázka řízení firmy.\n\n${activeCard.summary}\n\nTypický příklad: obchod používá jednu službu, marketing druhou a administrativa třetí. Každý nástroj samostatně vypadá neškodně. Dohromady ale vznikají nejasné účty, rozdílná pravidla, sdílené přístupy a data uložená mimo kontrolu firmy. Vedení přitom nedokáže říct, kdo odpovídá za výstup nebo co se stane při chybě.\n\nRizikem není jen únik dat. Chybný údaj může skončit v nabídce, automatická odpověď u zákazníka nebo nepřesné doporučení v rozhodovacím podkladu. Důsledek je provozní, obchodní i reputační.\n\nDoporučený postup má být konkrétní: vytvořit jednotnou evidenci, přidělit vlastníka, popsat vstupní data a oprávnění, určit povinnou lidskou kontrolu a stanovit termín nápravy. Výstupem není dlouhá směrnice, ale rozhodovací přehled pro vedení.\n\nMůj názor: firma nemusí nové nástroje plošně zakazovat. Musí ale vědět, kde je používá, proč je používá a kdo nese odpovědnost.\n\nMáte ve firmě jeden společný přehled, nebo zatím každý tým řeší tuto oblast sám?`;
-  const instagram = `${title}: přehled je důležitější než další nový nástroj.\n\n${activeCard.summary}\n\nZačněte prakticky:\n• sepište používaná řešení,\n• určete vlastníka každého účtu,\n• zkontrolujte vkládaná data,\n• omezte zbytečná oprávnění,\n• nastavte lidskou kontrolu důležitých výstupů.\n\nCílem není všechno zakázat. Cílem je vědět, kde vzniká riziko a kdo má udělat konkrétní nápravu.\n\n${activeSections.cta || "Uložte si postup a projděte ho s vedením firmy."}\n\n#${activeCard.project.replace(/[^\p{L}\p{N}]/gu, "")} #${(activeCard.tags || []).slice(0, 3).map(tag => tag.replace(/[^\p{L}\p{N}]/gu, "")).join(" #")}`;
-  const fullFacebook = `${facebook}\n\nVýstup má být dost konkrétní, aby vedení mohlo bez dalšího vysvětlování ověřit, co se změnilo a zda bylo opatření dokončeno.`;
-  const fullLinkedin = `${linkedin}\n\nPravidla přitom nemají zastavit rozumné experimenty. Mají vytvořit rychlou cestu, jak nový způsob použití popsat, posoudit a bezpečně převést do běžného provozu. Právě v tom je rozdíl mezi zákazem a skutečným řízením.`;
-  if (force || !activeSections.facebook || activeSections.facebook.length < 700) activeSections.facebook = fullFacebook;
-  if (force || !activeSections.linkedin || activeSections.linkedin.length < 1200) activeSections.linkedin = fullLinkedin;
-  if (force || !activeSections.instagram || activeSections.instagram.length < 500) activeSections.instagram = instagram;
-  activeSections.graphicText ||= `${title}\n${activeSections.summary ? "Praktický přehled. Jasná rizika. Konkrétní doporučení." : "Konkrétní problém. Praktický postup. Měřitelný výsledek."}`;
-  activeSections.newsletter ||= `${title}\n\n${activeCard.summary} V novém článku ukazujeme konkrétní rizika, odpovědnosti a postup, který může vedení malé nebo střední firmy použít jako praktický kontrolní seznam. Přečtěte si celý návod a zjistěte, jak převést téma do ověřitelných kroků.`;
+  const facebook = title + "\n\n" + activeCard.summary + "\n\n" + copy.social + "\n\n" + copy.steps.map((step, index) => (index + 1) + ". " + step).join("\n") + "\n\n" + copy.cta;
+  const linkedin = title + "\n\n" + activeCard.summary + "\n\n" + copy.intro + "\n\n" + copy.result + "\n\n" + copy.cta;
+  const instagram = title + "\n\n" + copy.social + "\n\n" + copy.steps.map(step => "• " + step).join("\n") + "\n\n" + copy.cta + "\n\n#" + activeCard.project.replace(/[^\p{L}\p{N}]/gu, "") + " #" + (activeCard.tags || []).slice(0, 3).map(tag => tag.replace(/[^\p{L}\p{N}]/gu, "")).join(" #");
+  if (force || !activeSections.facebook) activeSections.facebook = facebook;
+  if (force || !activeSections.linkedin) activeSections.linkedin = linkedin;
+  if (force || !activeSections.instagram) activeSections.instagram = instagram;
+  if (force || !activeSections.facebookPublish) activeSections.facebookPublish = facebook;
+  if (force || !activeSections.linkedinPublish) activeSections.linkedinPublish = linkedin;
+  if (force || !activeSections.instagramPublish) activeSections.instagramPublish = instagram;
+  if (force || !activeSections.newsletter) activeSections.newsletter = title + "\n\n" + activeCard.summary + "\n\n" + copy.cta;
+  if (force || !activeSections.graphicText) activeSections.graphicText = title;
 }
 
 function formatRecommendation() {
@@ -877,7 +982,9 @@ function generateVideo(force = false) {
 function ensureProductionContent() {
   activeSections = { ...activeSections, ...storedGenerated(activeCard) };
   featureDefinitions.forEach(([key, , field]) => { activeSections[key] = activeCard[field] || activeSections[key] || ""; });
-  generateBlog(); generateSocial(); generateImage(); generateVideo(); ensureAssetReferences(); generatePublishingOutputs(); generateTikTokPackage();
+  const repair = crossProjectLeak(activeCard, activeSections) || pupetoContentLeak(activeCard, activeSections);
+  if (repair) clearGeneratedProjectOutput(activeSections);
+  generateBlog(repair); generateSocial(repair); generateImage(); generateVideo(); ensureAssetReferences(); generatePublishingOutputs(); generateTikTokPackage(repair);
   persistGenerated();
 }
 
@@ -1116,7 +1223,7 @@ function generatePublishingOutputs() {
   activeSections.youtubePublish ||= `${activeCard.title}. ${activeCard.summary} ${activeSections.cta || "Více informací najdete na webu projektu."}`;
 }
 
-function generateTikTokPackage() {
+function generateTikTokPackage(force = false) {
   const projectRules = {
     "Agenda24": {
       format: "Talking head + komentovaná grafika a textové overlaye",
@@ -1152,23 +1259,26 @@ function generateTikTokPackage() {
     }
   };
   const rule = projectRules[activeCard.project] || projectRules["Agenda24"];
-  const point = activeSections.recommendation || activeCard.summary;
-  activeSections.tiktokFormat ||= rule.format;
-  activeSections.tiktokHook ||= rule.hook;
-  activeSections.tiktokCta ||= rule.cta;
-  activeSections.tiktokGoal ||= rule.goal;
-  activeSections.tiktokHashtags ||= rule.hashtags;
-  activeSections.tiktokScript ||= `0–2 s: Hook – „${activeSections.tiktokHook}“\n2–8 s: Stručně ukaž problém – ${activeCard.summary}\n8–15 s: Vysvětli řešení nebo pointu – ${point}\n15–20 s: CTA – ${activeSections.tiktokCta}`;
-  activeSections.tiktokSpoken ||= `${activeSections.tiktokHook} ${activeCard.summary} ${point} ${activeSections.tiktokCta}`;
-  activeSections.tiktokOnscreen ||= `${activeSections.tiktokHook}\nPROBLÉM\n${activeCard.title}\nŘEŠENÍ\n${activeSections.tiktokCta}`;
-  activeSections.tiktokStoryboard ||= `Záběr 1 (0–2 s): výrazný hook do kamery nebo hlavní vizuál.\nZáběr 2 (2–8 s): detail problému, obrazovky, služby nebo situace.\nZáběr 3 (8–15 s): tři stručné body řešení s čitelným overlayem.\nZáběr 4 (15–20 s): závěrečný CTA frame v brandu projektu ${activeCard.project}.`;
-  activeSections.tiktokPublish ||= `${activeSections.tiktokHook}\n\n${point}\n\n${activeSections.tiktokCta}\n\n${activeSections.tiktokHashtags}`;
-  activeSections.tiktokVideoPrompt ||= `Vytvoř vertikální TikTok video 9:16 v délce 15–20 sekund pro projekt ${activeCard.project}. Styl: ${rule.visual}. Formát: ${activeSections.tiktokFormat}. Téma: ${activeCard.title}. Mluvený text: „${activeSections.tiktokSpoken}“ Text na obrazovku po krátkých řádcích: ${activeSections.tiktokOnscreen}. Storyboard: ${activeSections.tiktokStoryboard}. CTA: ${activeSections.tiktokCta}. Tón je přímý, důvěryhodný, svižný a bez zbytečné omáčky. Nepoužívej vizuální zdroje jiné značky.`;
-  activeSections.tiktokCoverPrompt ||= `Vytvoř výrazný vertikální cover 1080 × 1920 px pro TikTok projektu ${activeCard.project}. ${rule.visual}. Krátký hlavní text: „${activeSections.tiktokHook}“ Maximálně 6–8 slov na coveru, vysoká čitelnost na mobilu, silný kontrast, bezpečné okraje, žádné falešné logo ani prvky jiné značky.`;
+  const point = activeCard.project === "Pupeto"
+    ? projectCopy(activeCard).social
+    : activeSections.recommendation || activeCard.summary;
+  const setGenerated = (key, value) => { if (force || !activeSections[key]) activeSections[key] = value; };
+  setGenerated("tiktokFormat", rule.format);
+  setGenerated("tiktokHook", rule.hook);
+  setGenerated("tiktokCta", rule.cta);
+  setGenerated("tiktokGoal", rule.goal);
+  setGenerated("tiktokHashtags", rule.hashtags);
+  setGenerated("tiktokScript", `0–2 s: Hook – „${activeSections.tiktokHook}“\n2–8 s: Stručně ukaž problém – ${activeCard.summary}\n8–15 s: Vysvětli řešení nebo pointu – ${point}\n15–20 s: CTA – ${activeSections.tiktokCta}`);
+  setGenerated("tiktokSpoken", `${activeSections.tiktokHook} ${activeCard.summary} ${point} ${activeSections.tiktokCta}`);
+  setGenerated("tiktokOnscreen", `${activeSections.tiktokHook}\nPROBLÉM\n${activeCard.title}\nŘEŠENÍ\n${activeSections.tiktokCta}`);
+  setGenerated("tiktokStoryboard", `Záběr 1 (0–2 s): výrazný hook do kamery nebo hlavní vizuál.\nZáběr 2 (2–8 s): detail problému, obrazovky, služby nebo situace.\nZáběr 3 (8–15 s): tři stručné body řešení s čitelným overlayem.\nZáběr 4 (15–20 s): závěrečný CTA frame v brandu projektu ${activeCard.project}.`);
+  setGenerated("tiktokPublish", `${activeSections.tiktokHook}\n\n${point}\n\n${activeSections.tiktokCta}\n\n${activeSections.tiktokHashtags}`);
+  setGenerated("tiktokVideoPrompt", `Vytvoř vertikální TikTok video 9:16 v délce 15–20 sekund pro projekt ${activeCard.project}. Styl: ${rule.visual}. Formát: ${activeSections.tiktokFormat}. Téma: ${activeCard.title}. Mluvený text: „${activeSections.tiktokSpoken}“ Text na obrazovku po krátkých řádcích: ${activeSections.tiktokOnscreen}. Storyboard: ${activeSections.tiktokStoryboard}. CTA: ${activeSections.tiktokCta}. Tón je přímý, důvěryhodný, svižný a bez zbytečné omáčky. Nepoužívej vizuální zdroje jiné značky.`);
+  setGenerated("tiktokCoverPrompt", `Vytvoř výrazný vertikální cover 1080 × 1920 px pro TikTok projektu ${activeCard.project}. ${rule.visual}. Krátký hlavní text: „${activeSections.tiktokHook}“ Maximálně 6–8 slov na coveru, vysoká čitelnost na mobilu, silný kontrast, bezpečné okraje, žádné falešné logo ani prvky jiné značky.`);
   const refs = referenceBlock(activeCard);
   if (!activeSections.tiktokVideoPrompt.startsWith("REFERENCE:")) activeSections.tiktokVideoPrompt = `${refs}\n\n${activeSections.tiktokVideoPrompt}`;
   if (!activeSections.tiktokCoverPrompt.startsWith("REFERENCE:")) activeSections.tiktokCoverPrompt = `${refs}\n\n${activeSections.tiktokCoverPrompt}`;
-  activeSections.tiktokStrategy ||= `Video otevírá konkrétní problém silným hookem a během několika sekund ukáže praktickou pointu. Formát odpovídá značce ${activeCard.project} a tématu „${activeCard.title}“. Krátké titulky udrží pozornost i bez zvuku. CTA přímo navazuje na obchodní cíl: ${activeSections.tiktokGoal.toLocaleLowerCase("cs")}.`;
+  setGenerated("tiktokStrategy", `Video otevírá konkrétní problém silným hookem a během několika sekund ukáže praktickou pointu. Formát odpovídá značce ${activeCard.project} a tématu „${activeCard.title}“. Krátké titulky udrží pozornost i bez zvuku. CTA vede k praktické pomoci pro majitele mazlíčků.`);
 }
 
 function renderDetailSections() {
