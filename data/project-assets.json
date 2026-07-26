@@ -1,0 +1,155 @@
+{
+  "Agenda24": {
+    "project": "Agenda24",
+    "assets": {
+      "agenda24_graphics_folder": "zdroje grafika",
+      "agenda24_logo_primary": "",
+      "agenda24_logo_symbol": "zdroje grafika/logo-agenda24-favicon-1000-x-1000.png",
+      "agenda24_person_reference_1": "zdroje grafika/Martin Agenda 24 .webp",
+      "agenda24_person_reference_2": "zdroje grafika/Agenda 24 -jajaja.webp",
+      "agenda24_design_reference_1": "zdroje grafika/fb.png",
+      "agenda24_design_reference_2": "zdroje grafika/in.png",
+      "agenda24_brand_manifest_file": "brand/agenda24/manifest.json"
+    },
+    "found_files": [
+      "zdroje grafika/Agenda 24 -jajaja.webp",
+      "zdroje grafika/Martin Agenda 24 .webp",
+      "zdroje grafika/fb.png",
+      "zdroje grafika/in.png",
+      "zdroje grafika/logo-agenda24-favicon-1000-x-1000.png"
+    ],
+    "missing_fields": [
+      "agenda24_logo_primary"
+    ]
+  },
+  "Firemní lektor": {
+    "project": "Firemní lektor",
+    "assets": {
+      "firemni_lektor_graphics_folder": "zdroje grafika Firemni lektor",
+      "firemni_lektor_logo_primary": "",
+      "firemni_lektor_logo_symbol": "",
+      "firemni_lektor_person_reference_1": "zdroje grafika Firemni lektor/ja.png",
+      "firemni_lektor_person_reference_2": "zdroje grafika Firemni lektor/lektor.png",
+      "firemni_lektor_design_reference_1": "zdroje grafika Firemni lektor/Firemní lektor.webp",
+      "firemni_lektor_design_reference_2": "zdroje grafika Firemni lektor/HOME ICONS10.webp",
+      "firemni_lektor_brand_manifest_file": "brand/firemni-lektor/manifest.json"
+    },
+    "found_files": [
+      "zdroje grafika Firemni lektor/Firemní lektor.webp",
+      "zdroje grafika Firemni lektor/HOME ICONS10.webp",
+      "zdroje grafika Firemni lektor/HOME ICONS11.webp",
+      "zdroje grafika Firemni lektor/HOME ICONS12.webp",
+      "zdroje grafika Firemni lektor/HOME ICONS5.webp",
+      "zdroje grafika Firemni lektor/HOME ICONS6.webp",
+      "zdroje grafika Firemni lektor/QR.png",
+      "zdroje grafika Firemni lektor/banner firemní školení – zástupce.lnk",
+      "zdroje grafika Firemni lektor/bublina.png",
+      "zdroje grafika Firemni lektor/certifikát.png",
+      "zdroje grafika Firemni lektor/hodiny.png",
+      "zdroje grafika Firemni lektor/ja.png",
+      "zdroje grafika Firemni lektor/karta.png",
+      "zdroje grafika Firemni lektor/kniha.png",
+      "zdroje grafika Firemni lektor/komplet ikony-02.svg",
+      "zdroje grafika Firemni lektor/komplet ikony-03.svg",
+      "zdroje grafika Firemni lektor/komplet ikony-04.svg",
+      "zdroje grafika Firemni lektor/komplet ikony-05.svg",
+      "zdroje grafika Firemni lektor/komplet ikony-06.svg",
+      "zdroje grafika Firemni lektor/komplet ikony-07.svg",
+      "zdroje grafika Firemni lektor/komplet ikony-08.svg",
+      "zdroje grafika Firemni lektor/komplet ikony-09.svg",
+      "zdroje grafika Firemni lektor/komplet ikony-10.svg",
+      "zdroje grafika Firemni lektor/komplet ikony-11.svg",
+      "zdroje grafika Firemni lektor/komplet ikony-12.svg",
+      "zdroje grafika Firemni lektor/komplet ikony-13.svg",
+      "zdroje grafika Firemni lektor/komplet ikony_Kreslicí plátno 1.svg",
+      "zdroje grafika Firemni lektor/kos.png",
+      "zdroje grafika Firemni lektor/lektor.png",
+      "zdroje grafika Firemni lektor/lidi.png",
+      "zdroje grafika Firemni lektor/list.png",
+      "zdroje grafika Firemni lektor/osvedceni.png",
+      "zdroje grafika Firemni lektor/platba-QR-kodem-maly.png",
+      "zdroje grafika Firemni lektor/platno.png",
+      "zdroje grafika Firemni lektor/profil – zástupce.lnk",
+      "zdroje grafika Firemni lektor/semestral oblicej1.webp",
+      "zdroje grafika Firemni lektor/semestral oblicej121.webp",
+      "zdroje grafika Firemni lektor/seznam.png",
+      "zdroje grafika Firemni lektor/slozka.png",
+      "zdroje grafika Firemni lektor/soubory.png",
+      "zdroje grafika Firemni lektor/spetna-vazba.png",
+      "zdroje grafika Firemni lektor/vibe coding1 – zástupce.lnk",
+      "zdroje grafika Firemni lektor/video.png",
+      "zdroje grafika Firemni lektor/videolekce.png",
+      "zdroje grafika Firemni lektor/ziva-online.png"
+    ],
+    "missing_fields": [
+      "firemni_lektor_logo_primary",
+      "firemni_lektor_logo_symbol"
+    ]
+  },
+  "Pupeto": {
+    "project": "Pupeto",
+    "assets": {
+      "pupeto_graphics_folder": "zdroje grafika pupeto",
+      "pupeto_logo_primary": "zdroje grafika pupeto/logo-pupeto-velke.png",
+      "pupeto_logo_symbol": "",
+      "pupeto_person_reference_1": "zdroje grafika pupeto/jack a mnouk.png",
+      "pupeto_person_reference_2": "zdroje grafika pupeto/Jack & Mnouk.mp4",
+      "pupeto_design_reference_1": "zdroje grafika pupeto/ikony hero-01.svg",
+      "pupeto_design_reference_2": "zdroje grafika pupeto/pieta.svg",
+      "pupeto_brand_manifest_file": "brand/pupeto/manifest.json"
+    },
+    "found_files": [
+      "zdroje grafika pupeto/CherryBombOne-Regular.ttf",
+      "zdroje grafika pupeto/Jack & Mnouk.mp4",
+      "zdroje grafika pupeto/NunitoSans-VariableFont_YTLC,opsz,wdth,wght.ttf",
+      "zdroje grafika pupeto/desktop.ini",
+      "zdroje grafika pupeto/ikony hero-01.svg",
+      "zdroje grafika pupeto/ikony hero-02.svg",
+      "zdroje grafika pupeto/ikony hero-03.svg",
+      "zdroje grafika pupeto/ikony hero-04.svg",
+      "zdroje grafika pupeto/ikony hero-05.svg",
+      "zdroje grafika pupeto/ikony hero-06.svg",
+      "zdroje grafika pupeto/ikony hero-07.svg",
+      "zdroje grafika pupeto/ikony hero-08.svg",
+      "zdroje grafika pupeto/ikony hero-09.svg",
+      "zdroje grafika pupeto/ikony hero-10.svg",
+      "zdroje grafika pupeto/ikony hero-11.svg",
+      "zdroje grafika pupeto/jack a mnouk.png",
+      "zdroje grafika pupeto/logo pupeto 350 x 150.svg",
+      "zdroje grafika pupeto/logo-pupeto-velke.png",
+      "zdroje grafika pupeto/logo-pupeto.png",
+      "zdroje grafika pupeto/ostatni.svg",
+      "zdroje grafika pupeto/pieta.svg"
+    ],
+    "missing_fields": [
+      "pupeto_logo_symbol"
+    ]
+  },
+  "Spolek AI": {
+    "project": "Spolek AI",
+    "assets": {
+      "spolek_ai_graphics_folder": "Zdroje grafika SpolekAI",
+      "spolek_ai_logo_primary": "Zdroje grafika SpolekAI/logo-spolek-bila.png",
+      "spolek_ai_logo_symbol": "",
+      "spolek_ai_person_reference_1": "",
+      "spolek_ai_person_reference_2": "",
+      "spolek_ai_design_reference_1": "Zdroje grafika SpolekAI/novy navrh oranz.png",
+      "spolek_ai_design_reference_2": "Zdroje grafika SpolekAI/video stack.mp4",
+      "spolek_ai_brand_manifest_file": "brand/spolek-ai/manifest.json"
+    },
+    "found_files": [
+      "Zdroje grafika SpolekAI/logo spolek bila.svg",
+      "Zdroje grafika SpolekAI/logo-nove-3-verze.png",
+      "Zdroje grafika SpolekAI/logo-spolek-bila.png",
+      "Zdroje grafika SpolekAI/novy navrh oranz.png",
+      "Zdroje grafika SpolekAI/spolekhneda.png",
+      "Zdroje grafika SpolekAI/spolekhneda.svg",
+      "Zdroje grafika SpolekAI/video stack.mp4"
+    ],
+    "missing_fields": [
+      "spolek_ai_logo_symbol",
+      "spolek_ai_person_reference_1",
+      "spolek_ai_person_reference_2"
+    ]
+  }
+}

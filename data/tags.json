@@ -1,0 +1,31 @@
+{
+  "projekty": [
+    "Agenda24",
+    "Pupeto",
+    "Spolek AI",
+    "Firemní lektor"
+  ],
+  "stavy": [
+    "koncept",
+    "k rozpracování",
+    "text hotov",
+    "grafika hotová",
+    "publikováno na blogu",
+    "publikováno na Facebooku",
+    "publikováno na LinkedIn",
+    "publikováno na Instagramu",
+    "archiv"
+  ],
+  "typy": [
+    "blog",
+    "Facebook",
+    "LinkedIn",
+    "Instagram",
+    "Reels",
+    "newsletter",
+    "landing page",
+    "obchodní nabídka",
+    "interní nápad",
+    "lead"
+  ]
+}

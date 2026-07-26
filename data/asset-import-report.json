@@ -1,0 +1,71 @@
+[
+  {
+    "project": "Agenda24",
+    "folder": "zdroje grafika",
+    "logo": "",
+    "symbol": "zdroje grafika/logo-agenda24-favicon-1000-x-1000.png",
+    "references": [
+      "zdroje grafika/Martin Agenda 24 .webp",
+      "zdroje grafika/Agenda 24 -jajaja.webp",
+      "zdroje grafika/fb.png",
+      "zdroje grafika/in.png"
+    ],
+    "manifest": "brand/agenda24/manifest.json",
+    "missing": [
+      "agenda24_logo_primary"
+    ],
+    "cards_updated": 12
+  },
+  {
+    "project": "Firemní lektor",
+    "folder": "zdroje grafika Firemni lektor",
+    "logo": "",
+    "symbol": "",
+    "references": [
+      "zdroje grafika Firemni lektor/ja.png",
+      "zdroje grafika Firemni lektor/lektor.png",
+      "zdroje grafika Firemni lektor/Firemní lektor.webp",
+      "zdroje grafika Firemni lektor/HOME ICONS10.webp"
+    ],
+    "manifest": "brand/firemni-lektor/manifest.json",
+    "missing": [
+      "firemni_lektor_logo_primary",
+      "firemni_lektor_logo_symbol"
+    ],
+    "cards_updated": 2
+  },
+  {
+    "project": "Pupeto",
+    "folder": "zdroje grafika pupeto",
+    "logo": "zdroje grafika pupeto/logo-pupeto-velke.png",
+    "symbol": "",
+    "references": [
+      "zdroje grafika pupeto/jack a mnouk.png",
+      "zdroje grafika pupeto/Jack & Mnouk.mp4",
+      "zdroje grafika pupeto/ikony hero-01.svg",
+      "zdroje grafika pupeto/pieta.svg"
+    ],
+    "manifest": "brand/pupeto/manifest.json",
+    "missing": [
+      "pupeto_logo_symbol"
+    ],
+    "cards_updated": 4
+  },
+  {
+    "project": "Spolek AI",
+    "folder": "Zdroje grafika SpolekAI",
+    "logo": "Zdroje grafika SpolekAI/logo-spolek-bila.png",
+    "symbol": "",
+    "references": [
+      "Zdroje grafika SpolekAI/novy navrh oranz.png",
+      "Zdroje grafika SpolekAI/video stack.mp4"
+    ],
+    "manifest": "brand/spolek-ai/manifest.json",
+    "missing": [
+      "spolek_ai_logo_symbol",
+      "spolek_ai_person_reference_1",
+      "spolek_ai_person_reference_2"
+    ],
+    "cards_updated": 3
+  }
+]
